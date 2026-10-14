@@ -1,0 +1,1774 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<display version="2.0.0">
+  <name>Hazemeyer accumulatore $(CUB)</name>
+  <width>920</width>
+  <height>710</height>
+  <widget type="label" version="2.0.0">
+    <name>Label_1</name>
+    <text>Hazemeyer CHV TL accumulatore  $(CUB)</text>
+    <x>10</x><y>5</y><width>900</width><height>34</height>
+    <font><font family="Liberation Sans" style="BOLD" size="22.0"></font></font>
+    <horizontal_alignment>0</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+  </widget>
+  <widget type="group" version="2.0.0">
+    <name>Cubicle</name>
+    <x>10</x><y>45</y><width>430</width><height>330</height>
+  </widget>
+  <widget type="label" version="2.0.0">
+    <name>Label_2</name>
+    <text>State</text>
+    <x>25</x><y>75</y><width>110</width><height>22</height>
+    <font><font family="Liberation Sans" style="REGULAR" size="14.0"></font></font>
+    <horizontal_alignment>0</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+  </widget>
+  <widget type="textupdate" version="2.0.0">
+    <name>Text Update_3</name>
+    <pv_name>$(P):$(CUB):STATE_RB</pv_name>
+    <x>135</x><y>75</y><width>160</width><height>22</height>
+    <show_units>true</show_units>
+    <horizontal_alignment>1</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+    <border_alarm_sensitive>true</border_alarm_sensitive>
+  </widget>
+  <widget type="label" version="2.0.0">
+    <name>Label_4</name>
+    <text>Local/Remote</text>
+    <x>25</x><y>102</y><width>110</width><height>22</height>
+    <font><font family="Liberation Sans" style="REGULAR" size="14.0"></font></font>
+    <horizontal_alignment>0</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+  </widget>
+  <widget type="textupdate" version="2.0.0">
+    <name>Text Update_5</name>
+    <pv_name>$(P):$(CUB):LOC_REM</pv_name>
+    <x>135</x><y>102</y><width>160</width><height>22</height>
+    <show_units>true</show_units>
+    <horizontal_alignment>1</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+    <border_alarm_sensitive>true</border_alarm_sensitive>
+  </widget>
+  <widget type="label" version="2.0.0">
+    <name>Label_6</name>
+    <text>Command</text>
+    <x>25</x><y>129</y><width>110</width><height>22</height>
+    <font><font family="Liberation Sans" style="REGULAR" size="14.0"></font></font>
+    <horizontal_alignment>0</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+  </widget>
+  <widget type="action_button" version="3.0.0">
+    <name>Action Button_7</name>
+    <actions>
+      <action type="write_pv">
+        <pv_name>$(pv_name)</pv_name>
+        <value>0</value>
+        <description>OFF</description>
+      </action>
+    </actions>
+    <pv_name>$(P):$(CUB):STATE_SP</pv_name>
+    <text>OFF</text>
+    <x>135</x><y>129</y><width>70</width><height>22</height>
+    <background_color><color red="240" green="160" blue="160"></color></background_color>
+  </widget>
+  <widget type="action_button" version="3.0.0">
+    <name>Action Button_8</name>
+    <actions>
+      <action type="write_pv">
+        <pv_name>$(pv_name)</pv_name>
+        <value>2</value>
+        <description>STANDBY</description>
+      </action>
+    </actions>
+    <pv_name>$(P):$(CUB):STATE_SP</pv_name>
+    <text>STANDBY</text>
+    <x>207</x><y>129</y><width>70</width><height>22</height>
+    <background_color><color red="240" green="220" blue="140"></color></background_color>
+  </widget>
+  <widget type="action_button" version="3.0.0">
+    <name>Action Button_9</name>
+    <actions>
+      <action type="write_pv">
+        <pv_name>$(pv_name)</pv_name>
+        <value>1</value>
+        <description>ON</description>
+      </action>
+    </actions>
+    <pv_name>$(P):$(CUB):STATE_SP</pv_name>
+    <text>ON</text>
+    <x>279</x><y>129</y><width>70</width><height>22</height>
+    <background_color><color red="150" green="220" blue="150"></color></background_color>
+  </widget>
+  <widget type="action_button" version="3.0.0">
+    <name>Action Button_10</name>
+    <actions>
+      <action type="write_pv">
+        <pv_name>$(pv_name)</pv_name>
+        <value>3</value>
+        <description>RESET</description>
+      </action>
+    </actions>
+    <pv_name>$(P):$(CUB):STATE_SP</pv_name>
+    <text>RESET</text>
+    <x>351</x><y>129</y><width>70</width><height>22</height>
+    <background_color><color red="210" green="210" blue="210"></color></background_color>
+  </widget>
+  <widget type="led" version="2.0.0">
+    <name>LED_11</name>
+    <pv_name>$(P):$(CUB):READY</pv_name>
+    <x>25</x><y>165</y><width>20</width><height>20</height>
+    <off_color><color red="255" green="0" blue="0"></color></off_color>
+    <on_color><color red="0" green="200" blue="0"></color></on_color>
+  </widget>
+  <widget type="label" version="2.0.0">
+    <name>Label_12</name>
+    <text>Ready</text>
+    <x>50</x><y>164</y><width>150</width><height>22</height>
+    <font><font family="Liberation Sans" style="REGULAR" size="14.0"></font></font>
+    <horizontal_alignment>0</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+  </widget>
+  <widget type="led" version="2.0.0">
+    <name>LED_13</name>
+    <pv_name>$(P):$(CUB):TRANSFO_OT</pv_name>
+    <x>25</x><y>192</y><width>20</width><height>20</height>
+    <off_color><color red="60" green="100" blue="60"></color></off_color>
+    <on_color><color red="255" green="0" blue="0"></color></on_color>
+  </widget>
+  <widget type="label" version="2.0.0">
+    <name>Label_14</name>
+    <text>Transfo over-temp</text>
+    <x>50</x><y>191</y><width>175</width><height>22</height>
+    <font><font family="Liberation Sans" style="REGULAR" size="14.0"></font></font>
+    <horizontal_alignment>0</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+  </widget>
+  <widget type="led" version="2.0.0">
+    <name>LED_15</name>
+    <pv_name>$(P):$(CUB):RECTIFIER_OT</pv_name>
+    <x>25</x><y>219</y><width>20</width><height>20</height>
+    <off_color><color red="60" green="100" blue="60"></color></off_color>
+    <on_color><color red="255" green="0" blue="0"></color></on_color>
+  </widget>
+  <widget type="label" version="2.0.0">
+    <name>Label_16</name>
+    <text>Rectifier over-temp</text>
+    <x>50</x><y>218</y><width>175</width><height>22</height>
+    <font><font family="Liberation Sans" style="REGULAR" size="14.0"></font></font>
+    <horizontal_alignment>0</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+  </widget>
+  <widget type="led" version="2.0.0">
+    <name>LED_17</name>
+    <pv_name>$(P):$(CUB):CHOKE_OT</pv_name>
+    <x>25</x><y>246</y><width>20</width><height>20</height>
+    <off_color><color red="60" green="100" blue="60"></color></off_color>
+    <on_color><color red="255" green="0" blue="0"></color></on_color>
+  </widget>
+  <widget type="label" version="2.0.0">
+    <name>Label_18</name>
+    <text>Choke over-temp</text>
+    <x>50</x><y>245</y><width>175</width><height>22</height>
+    <font><font family="Liberation Sans" style="REGULAR" size="14.0"></font></font>
+    <horizontal_alignment>0</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+  </widget>
+  <widget type="led" version="2.0.0">
+    <name>LED_19</name>
+    <pv_name>$(P):$(CUB):FUSE_FAULT</pv_name>
+    <x>25</x><y>273</y><width>20</width><height>20</height>
+    <off_color><color red="60" green="100" blue="60"></color></off_color>
+    <on_color><color red="255" green="0" blue="0"></color></on_color>
+  </widget>
+  <widget type="label" version="2.0.0">
+    <name>Label_20</name>
+    <text>Fuses</text>
+    <x>50</x><y>272</y><width>175</width><height>22</height>
+    <font><font family="Liberation Sans" style="REGULAR" size="14.0"></font></font>
+    <horizontal_alignment>0</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+  </widget>
+  <widget type="led" version="2.0.0">
+    <name>LED_21</name>
+    <pv_name>$(P):$(CUB):EARTH_FAULT</pv_name>
+    <x>25</x><y>300</y><width>20</width><height>20</height>
+    <off_color><color red="60" green="100" blue="60"></color></off_color>
+    <on_color><color red="255" green="0" blue="0"></color></on_color>
+  </widget>
+  <widget type="label" version="2.0.0">
+    <name>Label_22</name>
+    <text>Earth fault</text>
+    <x>50</x><y>299</y><width>175</width><height>22</height>
+    <font><font family="Liberation Sans" style="REGULAR" size="14.0"></font></font>
+    <horizontal_alignment>0</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+  </widget>
+  <widget type="led" version="2.0.0">
+    <name>LED_23</name>
+    <pv_name>$(P):$(CUB):CABINET_OT</pv_name>
+    <x>25</x><y>327</y><width>20</width><height>20</height>
+    <off_color><color red="60" green="100" blue="60"></color></off_color>
+    <on_color><color red="255" green="0" blue="0"></color></on_color>
+  </widget>
+  <widget type="label" version="2.0.0">
+    <name>Label_24</name>
+    <text>Cabinet over-temp</text>
+    <x>50</x><y>326</y><width>175</width><height>22</height>
+    <font><font family="Liberation Sans" style="REGULAR" size="14.0"></font></font>
+    <horizontal_alignment>0</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+  </widget>
+  <widget type="led" version="2.0.0">
+    <name>LED_25</name>
+    <pv_name>$(P):$(CUB):DOOR_OPEN</pv_name>
+    <x>230</x><y>165</y><width>20</width><height>20</height>
+    <off_color><color red="60" green="100" blue="60"></color></off_color>
+    <on_color><color red="255" green="0" blue="0"></color></on_color>
+  </widget>
+  <widget type="label" version="2.0.0">
+    <name>Label_26</name>
+    <text>Door open</text>
+    <x>255</x><y>164</y><width>175</width><height>22</height>
+    <font><font family="Liberation Sans" style="REGULAR" size="14.0"></font></font>
+    <horizontal_alignment>0</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+  </widget>
+  <widget type="led" version="2.0.0">
+    <name>LED_27</name>
+    <pv_name>$(P):$(CUB):USER_FAULT1</pv_name>
+    <x>230</x><y>192</y><width>20</width><height>20</height>
+    <off_color><color red="60" green="100" blue="60"></color></off_color>
+    <on_color><color red="255" green="0" blue="0"></color></on_color>
+  </widget>
+  <widget type="label" version="2.0.0">
+    <name>Label_28</name>
+    <text>User fault 1</text>
+    <x>255</x><y>191</y><width>175</width><height>22</height>
+    <font><font family="Liberation Sans" style="REGULAR" size="14.0"></font></font>
+    <horizontal_alignment>0</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+  </widget>
+  <widget type="led" version="2.0.0">
+    <name>LED_29</name>
+    <pv_name>$(P):$(CUB):USER_FAULT2</pv_name>
+    <x>230</x><y>219</y><width>20</width><height>20</height>
+    <off_color><color red="60" green="100" blue="60"></color></off_color>
+    <on_color><color red="255" green="0" blue="0"></color></on_color>
+  </widget>
+  <widget type="label" version="2.0.0">
+    <name>Label_30</name>
+    <text>User fault 2</text>
+    <x>255</x><y>218</y><width>175</width><height>22</height>
+    <font><font family="Liberation Sans" style="REGULAR" size="14.0"></font></font>
+    <horizontal_alignment>0</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+  </widget>
+  <widget type="led" version="2.0.0">
+    <name>LED_31</name>
+    <pv_name>$(P):$(CUB):USER_FAULT3</pv_name>
+    <x>230</x><y>246</y><width>20</width><height>20</height>
+    <off_color><color red="60" green="100" blue="60"></color></off_color>
+    <on_color><color red="255" green="0" blue="0"></color></on_color>
+  </widget>
+  <widget type="label" version="2.0.0">
+    <name>Label_32</name>
+    <text>User fault 3</text>
+    <x>255</x><y>245</y><width>175</width><height>22</height>
+    <font><font family="Liberation Sans" style="REGULAR" size="14.0"></font></font>
+    <horizontal_alignment>0</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+  </widget>
+  <widget type="led" version="2.0.0">
+    <name>LED_33</name>
+    <pv_name>$(P):$(CUB):USER_FAULT4</pv_name>
+    <x>230</x><y>273</y><width>20</width><height>20</height>
+    <off_color><color red="60" green="100" blue="60"></color></off_color>
+    <on_color><color red="255" green="0" blue="0"></color></on_color>
+  </widget>
+  <widget type="label" version="2.0.0">
+    <name>Label_34</name>
+    <text>User fault 4</text>
+    <x>255</x><y>272</y><width>175</width><height>22</height>
+    <font><font family="Liberation Sans" style="REGULAR" size="14.0"></font></font>
+    <horizontal_alignment>0</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+  </widget>
+  <widget type="led" version="2.0.0">
+    <name>LED_35</name>
+    <pv_name>$(P):$(CUB):USER_FAULT5</pv_name>
+    <x>230</x><y>300</y><width>20</width><height>20</height>
+    <off_color><color red="60" green="100" blue="60"></color></off_color>
+    <on_color><color red="255" green="0" blue="0"></color></on_color>
+  </widget>
+  <widget type="label" version="2.0.0">
+    <name>Label_36</name>
+    <text>User fault 5</text>
+    <x>255</x><y>299</y><width>175</width><height>22</height>
+    <font><font family="Liberation Sans" style="REGULAR" size="14.0"></font></font>
+    <horizontal_alignment>0</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+  </widget>
+  <widget type="group" version="2.0.0">
+    <name>Mains</name>
+    <x>450</x><y>45</y><width>460</width><height>330</height>
+  </widget>
+  <widget type="label" version="2.0.0">
+    <name>Label_37</name>
+    <text>U1 / U2 / U3</text>
+    <x>465</x><y>75</y><width>115</width><height>22</height>
+    <font><font family="Liberation Sans" style="REGULAR" size="14.0"></font></font>
+    <horizontal_alignment>0</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+  </widget>
+  <widget type="textupdate" version="2.0.0">
+    <name>Text Update_38</name>
+    <pv_name>$(P):$(CUB):MAINS_U1</pv_name>
+    <x>580</x><y>75</y><width>100</width><height>22</height>
+    <show_units>true</show_units>
+    <horizontal_alignment>1</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+    <border_alarm_sensitive>true</border_alarm_sensitive>
+  </widget>
+  <widget type="textupdate" version="2.0.0">
+    <name>Text Update_39</name>
+    <pv_name>$(P):$(CUB):MAINS_U2</pv_name>
+    <x>685</x><y>75</y><width>100</width><height>22</height>
+    <show_units>true</show_units>
+    <horizontal_alignment>1</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+    <border_alarm_sensitive>true</border_alarm_sensitive>
+  </widget>
+  <widget type="textupdate" version="2.0.0">
+    <name>Text Update_40</name>
+    <pv_name>$(P):$(CUB):MAINS_U3</pv_name>
+    <x>790</x><y>75</y><width>100</width><height>22</height>
+    <show_units>true</show_units>
+    <horizontal_alignment>1</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+    <border_alarm_sensitive>true</border_alarm_sensitive>
+  </widget>
+  <widget type="label" version="2.0.0">
+    <name>Label_41</name>
+    <text>I1 / I2 / I3</text>
+    <x>465</x><y>102</y><width>115</width><height>22</height>
+    <font><font family="Liberation Sans" style="REGULAR" size="14.0"></font></font>
+    <horizontal_alignment>0</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+  </widget>
+  <widget type="textupdate" version="2.0.0">
+    <name>Text Update_42</name>
+    <pv_name>$(P):$(CUB):MAINS_I1</pv_name>
+    <x>580</x><y>102</y><width>100</width><height>22</height>
+    <show_units>true</show_units>
+    <horizontal_alignment>1</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+    <border_alarm_sensitive>true</border_alarm_sensitive>
+  </widget>
+  <widget type="textupdate" version="2.0.0">
+    <name>Text Update_43</name>
+    <pv_name>$(P):$(CUB):MAINS_I2</pv_name>
+    <x>685</x><y>102</y><width>100</width><height>22</height>
+    <show_units>true</show_units>
+    <horizontal_alignment>1</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+    <border_alarm_sensitive>true</border_alarm_sensitive>
+  </widget>
+  <widget type="textupdate" version="2.0.0">
+    <name>Text Update_44</name>
+    <pv_name>$(P):$(CUB):MAINS_I3</pv_name>
+    <x>790</x><y>102</y><width>100</width><height>22</height>
+    <show_units>true</show_units>
+    <horizontal_alignment>1</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+    <border_alarm_sensitive>true</border_alarm_sensitive>
+  </widget>
+  <widget type="label" version="2.0.0">
+    <name>Label_45</name>
+    <text>P1 / P2 / P3</text>
+    <x>465</x><y>129</y><width>115</width><height>22</height>
+    <font><font family="Liberation Sans" style="REGULAR" size="14.0"></font></font>
+    <horizontal_alignment>0</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+  </widget>
+  <widget type="textupdate" version="2.0.0">
+    <name>Text Update_46</name>
+    <pv_name>$(P):$(CUB):MAINS_P1</pv_name>
+    <x>580</x><y>129</y><width>100</width><height>22</height>
+    <show_units>true</show_units>
+    <horizontal_alignment>1</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+    <border_alarm_sensitive>true</border_alarm_sensitive>
+  </widget>
+  <widget type="textupdate" version="2.0.0">
+    <name>Text Update_47</name>
+    <pv_name>$(P):$(CUB):MAINS_P2</pv_name>
+    <x>685</x><y>129</y><width>100</width><height>22</height>
+    <show_units>true</show_units>
+    <horizontal_alignment>1</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+    <border_alarm_sensitive>true</border_alarm_sensitive>
+  </widget>
+  <widget type="textupdate" version="2.0.0">
+    <name>Text Update_48</name>
+    <pv_name>$(P):$(CUB):MAINS_P3</pv_name>
+    <x>790</x><y>129</y><width>100</width><height>22</height>
+    <show_units>true</show_units>
+    <horizontal_alignment>1</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+    <border_alarm_sensitive>true</border_alarm_sensitive>
+  </widget>
+  <widget type="label" version="2.0.0">
+    <name>Label_49</name>
+    <text>U avg / I avg</text>
+    <x>465</x><y>156</y><width>115</width><height>22</height>
+    <font><font family="Liberation Sans" style="REGULAR" size="14.0"></font></font>
+    <horizontal_alignment>0</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+  </widget>
+  <widget type="textupdate" version="2.0.0">
+    <name>Text Update_50</name>
+    <pv_name>$(P):$(CUB):MAINS_U_AVG</pv_name>
+    <x>580</x><y>156</y><width>100</width><height>22</height>
+    <show_units>true</show_units>
+    <horizontal_alignment>1</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+    <border_alarm_sensitive>true</border_alarm_sensitive>
+  </widget>
+  <widget type="textupdate" version="2.0.0">
+    <name>Text Update_51</name>
+    <pv_name>$(P):$(CUB):MAINS_I_AVG</pv_name>
+    <x>685</x><y>156</y><width>100</width><height>22</height>
+    <show_units>true</show_units>
+    <horizontal_alignment>1</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+    <border_alarm_sensitive>true</border_alarm_sensitive>
+  </widget>
+  <widget type="label" version="2.0.0">
+    <name>Label_52</name>
+    <text>P / Q / S total</text>
+    <x>465</x><y>183</y><width>115</width><height>22</height>
+    <font><font family="Liberation Sans" style="REGULAR" size="14.0"></font></font>
+    <horizontal_alignment>0</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+  </widget>
+  <widget type="textupdate" version="2.0.0">
+    <name>Text Update_53</name>
+    <pv_name>$(P):$(CUB):MAINS_P_TOT</pv_name>
+    <x>580</x><y>183</y><width>100</width><height>22</height>
+    <show_units>true</show_units>
+    <horizontal_alignment>1</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+    <border_alarm_sensitive>true</border_alarm_sensitive>
+  </widget>
+  <widget type="textupdate" version="2.0.0">
+    <name>Text Update_54</name>
+    <pv_name>$(P):$(CUB):MAINS_Q_TOT</pv_name>
+    <x>685</x><y>183</y><width>100</width><height>22</height>
+    <show_units>true</show_units>
+    <horizontal_alignment>1</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+    <border_alarm_sensitive>true</border_alarm_sensitive>
+  </widget>
+  <widget type="textupdate" version="2.0.0">
+    <name>Text Update_55</name>
+    <pv_name>$(P):$(CUB):MAINS_S_TOT</pv_name>
+    <x>790</x><y>183</y><width>100</width><height>22</height>
+    <show_units>true</show_units>
+    <horizontal_alignment>1</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+    <border_alarm_sensitive>true</border_alarm_sensitive>
+  </widget>
+  <widget type="label" version="2.0.0">
+    <name>Label_56</name>
+    <text>PF avg / Freq</text>
+    <x>465</x><y>210</y><width>115</width><height>22</height>
+    <font><font family="Liberation Sans" style="REGULAR" size="14.0"></font></font>
+    <horizontal_alignment>0</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+  </widget>
+  <widget type="textupdate" version="2.0.0">
+    <name>Text Update_57</name>
+    <pv_name>$(P):$(CUB):MAINS_PF_AVG</pv_name>
+    <x>580</x><y>210</y><width>100</width><height>22</height>
+    <show_units>true</show_units>
+    <horizontal_alignment>1</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+    <border_alarm_sensitive>true</border_alarm_sensitive>
+  </widget>
+  <widget type="textupdate" version="2.0.0">
+    <name>Text Update_58</name>
+    <pv_name>$(P):$(CUB):MAINS_FREQ</pv_name>
+    <x>685</x><y>210</y><width>100</width><height>22</height>
+    <show_units>true</show_units>
+    <horizontal_alignment>1</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+    <border_alarm_sensitive>true</border_alarm_sensitive>
+  </widget>
+  <widget type="label" version="2.0.0">
+    <name>Label_59</name>
+    <text>Earth current</text>
+    <x>465</x><y>237</y><width>115</width><height>22</height>
+    <font><font family="Liberation Sans" style="REGULAR" size="14.0"></font></font>
+    <horizontal_alignment>0</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+  </widget>
+  <widget type="textupdate" version="2.0.0">
+    <name>Text Update_60</name>
+    <pv_name>$(P):$(CUB):EARTH_CURRENT_RB</pv_name>
+    <x>580</x><y>237</y><width>100</width><height>22</height>
+    <show_units>true</show_units>
+    <horizontal_alignment>1</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+    <border_alarm_sensitive>true</border_alarm_sensitive>
+  </widget>
+  <widget type="label" version="2.0.0">
+    <name>Label_61</name>
+    <text>Active energy</text>
+    <x>465</x><y>264</y><width>115</width><height>22</height>
+    <font><font family="Liberation Sans" style="REGULAR" size="14.0"></font></font>
+    <horizontal_alignment>0</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+  </widget>
+  <widget type="textupdate" version="2.0.0">
+    <name>Text Update_62</name>
+    <pv_name>$(P):$(CUB):MAINS_ACT_ENERGY</pv_name>
+    <x>580</x><y>264</y><width>100</width><height>22</height>
+    <show_units>true</show_units>
+    <horizontal_alignment>1</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+    <border_alarm_sensitive>true</border_alarm_sensitive>
+  </widget>
+  <widget type="label" version="2.0.0">
+    <name>Label_63</name>
+    <text>Reactive energy</text>
+    <x>465</x><y>291</y><width>115</width><height>22</height>
+    <font><font family="Liberation Sans" style="REGULAR" size="14.0"></font></font>
+    <horizontal_alignment>0</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+  </widget>
+  <widget type="textupdate" version="2.0.0">
+    <name>Text Update_64</name>
+    <pv_name>$(P):$(CUB):MAINS_REACT_ENERGY</pv_name>
+    <x>580</x><y>291</y><width>100</width><height>22</height>
+    <show_units>true</show_units>
+    <horizontal_alignment>1</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+    <border_alarm_sensitive>true</border_alarm_sensitive>
+  </widget>
+  <widget type="action_button" version="3.0.0">
+    <name>Action Button_65</name>
+    <actions>
+      <action type="write_pv">
+        <pv_name>$(pv_name)</pv_name>
+        <value>1</value>
+        <description>Reset active E</description>
+      </action>
+    </actions>
+    <pv_name>$(P):$(CUB):ACT_ENERGY_RST</pv_name>
+    <text>Reset active E</text>
+    <x>580</x><y>318</y><width>150</width><height>22</height>
+    <background_color><color red="210" green="210" blue="210"></color></background_color>
+  </widget>
+  <widget type="action_button" version="3.0.0">
+    <name>Action Button_66</name>
+    <actions>
+      <action type="write_pv">
+        <pv_name>$(pv_name)</pv_name>
+        <value>1</value>
+        <description>Reset reactive E</description>
+      </action>
+    </actions>
+    <pv_name>$(P):$(CUB):REACT_ENERGY_RST</pv_name>
+    <text>Reset reactive E</text>
+    <x>735</x><y>318</y><width>160</width><height>22</height>
+    <background_color><color red="210" green="210" blue="210"></color></background_color>
+  </widget>
+  <widget type="group" version="2.0.0">
+    <name>Channels</name>
+    <x>10</x><y>390</y><width>900</width><height>300</height>
+  </widget>
+  <widget type="label" version="2.0.0">
+    <name>Label_67</name>
+    <text>Ch</text>
+    <x>25</x><y>415</y><width>50</width><height>20</height>
+    <font><font family="Liberation Sans" style="BOLD" size="12.0"></font></font>
+    <horizontal_alignment>1</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+  </widget>
+  <widget type="label" version="2.0.0">
+    <name>Label_68</name>
+    <text>State</text>
+    <x>75</x><y>415</y><width>130</width><height>20</height>
+    <font><font family="Liberation Sans" style="BOLD" size="12.0"></font></font>
+    <horizontal_alignment>1</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+  </widget>
+  <widget type="label" version="2.0.0">
+    <name>Label_69</name>
+    <text>Set (A)</text>
+    <x>210</x><y>415</y><width>80</width><height>20</height>
+    <font><font family="Liberation Sans" style="BOLD" size="12.0"></font></font>
+    <horizontal_alignment>1</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+  </widget>
+  <widget type="label" version="2.0.0">
+    <name>Label_70</name>
+    <text>Set RB</text>
+    <x>295</x><y>415</y><width>80</width><height>20</height>
+    <font><font family="Liberation Sans" style="BOLD" size="12.0"></font></font>
+    <horizontal_alignment>1</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+  </widget>
+  <widget type="label" version="2.0.0">
+    <name>Label_71</name>
+    <text>I out</text>
+    <x>380</x><y>415</y><width>80</width><height>20</height>
+    <font><font family="Liberation Sans" style="BOLD" size="12.0"></font></font>
+    <horizontal_alignment>1</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+  </widget>
+  <widget type="label" version="2.0.0">
+    <name>Label_72</name>
+    <text>V out</text>
+    <x>465</x><y>415</y><width>80</width><height>20</height>
+    <font><font family="Liberation Sans" style="BOLD" size="12.0"></font></font>
+    <horizontal_alignment>1</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+  </widget>
+  <widget type="label" version="2.0.0">
+    <name>Label_73</name>
+    <text>Command</text>
+    <x>550</x><y>415</y><width>190</width><height>20</height>
+    <font><font family="Liberation Sans" style="BOLD" size="12.0"></font></font>
+    <horizontal_alignment>1</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+  </widget>
+  <widget type="label" version="2.0.0">
+    <name>Label_74</name>
+    <text>Rdy</text>
+    <x>745</x><y>415</y><width>25</width><height>20</height>
+    <font><font family="Liberation Sans" style="BOLD" size="12.0"></font></font>
+    <horizontal_alignment>1</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+  </widget>
+  <widget type="label" version="2.0.0">
+    <name>Label_75</name>
+    <text>Bal</text>
+    <x>772</x><y>415</y><width>25</width><height>20</height>
+    <font><font family="Liberation Sans" style="BOLD" size="12.0"></font></font>
+    <horizontal_alignment>1</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+  </widget>
+  <widget type="label" version="2.0.0">
+    <name>Label_76</name>
+    <text>Fus</text>
+    <x>799</x><y>415</y><width>25</width><height>20</height>
+    <font><font family="Liberation Sans" style="BOLD" size="12.0"></font></font>
+    <horizontal_alignment>1</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+  </widget>
+  <widget type="label" version="2.0.0">
+    <name>Label_77</name>
+    <text>OV</text>
+    <x>826</x><y>415</y><width>25</width><height>20</height>
+    <font><font family="Liberation Sans" style="BOLD" size="12.0"></font></font>
+    <horizontal_alignment>1</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+  </widget>
+  <widget type="label" version="2.0.0">
+    <name>Label_78</name>
+    <text>OC</text>
+    <x>853</x><y>415</y><width>25</width><height>20</height>
+    <font><font family="Liberation Sans" style="BOLD" size="12.0"></font></font>
+    <horizontal_alignment>1</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+  </widget>
+  <widget type="label" version="2.0.0">
+    <name>Label_79</name>
+    <text>Com</text>
+    <x>878</x><y>415</y><width>28</width><height>20</height>
+    <font><font family="Liberation Sans" style="BOLD" size="12.0"></font></font>
+    <horizontal_alignment>1</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+  </widget>
+  <widget type="label" version="2.0.0">
+    <name>Label_80</name>
+    <text>CH1</text>
+    <x>25</x><y>440</y><width>50</width><height>22</height>
+    <font><font family="Liberation Sans" style="BOLD" size="14.0"></font></font>
+    <horizontal_alignment>1</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+  </widget>
+  <widget type="textupdate" version="2.0.0">
+    <name>Text Update_81</name>
+    <pv_name>$(P):$(CUB):CH1:STATE_RB</pv_name>
+    <x>75</x><y>440</y><width>130</width><height>22</height>
+    <show_units>true</show_units>
+    <horizontal_alignment>1</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+    <border_alarm_sensitive>true</border_alarm_sensitive>
+  </widget>
+  <widget type="textentry" version="3.0.0">
+    <name>Text Entry_82</name>
+    <pv_name>$(P):$(CUB):CH1:CURRENT_SP</pv_name>
+    <x>210</x><y>440</y><width>80</width><height>22</height>
+    <show_units>true</show_units>
+    <horizontal_alignment>1</horizontal_alignment>
+  </widget>
+  <widget type="textupdate" version="2.0.0">
+    <name>Text Update_83</name>
+    <pv_name>$(P):$(CUB):CH1:SET_CURRENT_RB</pv_name>
+    <x>295</x><y>440</y><width>80</width><height>22</height>
+    <show_units>true</show_units>
+    <horizontal_alignment>1</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+    <border_alarm_sensitive>true</border_alarm_sensitive>
+  </widget>
+  <widget type="textupdate" version="2.0.0">
+    <name>Text Update_84</name>
+    <pv_name>$(P):$(CUB):CH1:CURRENT_RB</pv_name>
+    <x>380</x><y>440</y><width>80</width><height>22</height>
+    <show_units>true</show_units>
+    <horizontal_alignment>1</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+    <border_alarm_sensitive>true</border_alarm_sensitive>
+  </widget>
+  <widget type="textupdate" version="2.0.0">
+    <name>Text Update_85</name>
+    <pv_name>$(P):$(CUB):CH1:VOLTAGE_RB</pv_name>
+    <x>465</x><y>440</y><width>80</width><height>22</height>
+    <show_units>true</show_units>
+    <horizontal_alignment>1</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+    <border_alarm_sensitive>true</border_alarm_sensitive>
+  </widget>
+  <widget type="action_button" version="3.0.0">
+    <name>Action Button_86</name>
+    <actions>
+      <action type="write_pv">
+        <pv_name>$(pv_name)</pv_name>
+        <value>1</value>
+        <description>ON</description>
+      </action>
+    </actions>
+    <pv_name>$(P):$(CUB):CH1:STATE_SP</pv_name>
+    <text>ON</text>
+    <x>550</x><y>440</y><width>60</width><height>22</height>
+    <background_color><color red="150" green="220" blue="150"></color></background_color>
+  </widget>
+  <widget type="action_button" version="3.0.0">
+    <name>Action Button_87</name>
+    <actions>
+      <action type="write_pv">
+        <pv_name>$(pv_name)</pv_name>
+        <value>0</value>
+        <description>OFF</description>
+      </action>
+    </actions>
+    <pv_name>$(P):$(CUB):CH1:STATE_SP</pv_name>
+    <text>OFF</text>
+    <x>613</x><y>440</y><width>60</width><height>22</height>
+    <background_color><color red="240" green="160" blue="160"></color></background_color>
+  </widget>
+  <widget type="action_button" version="3.0.0">
+    <name>Action Button_88</name>
+    <actions>
+      <action type="write_pv">
+        <pv_name>$(pv_name)</pv_name>
+        <value>3</value>
+        <description>RESET</description>
+      </action>
+    </actions>
+    <pv_name>$(P):$(CUB):CH1:STATE_SP</pv_name>
+    <text>RESET</text>
+    <x>676</x><y>440</y><width>64</width><height>22</height>
+    <background_color><color red="210" green="210" blue="210"></color></background_color>
+  </widget>
+  <widget type="led" version="2.0.0">
+    <name>LED_89</name>
+    <pv_name>$(P):$(CUB):CH1:READY</pv_name>
+    <x>747</x><y>441</y><width>20</width><height>20</height>
+    <off_color><color red="255" green="0" blue="0"></color></off_color>
+    <on_color><color red="0" green="200" blue="0"></color></on_color>
+  </widget>
+  <widget type="led" version="2.0.0">
+    <name>LED_90</name>
+    <pv_name>$(P):$(CUB):CH1:BALLAST_OT</pv_name>
+    <x>774</x><y>441</y><width>20</width><height>20</height>
+    <off_color><color red="60" green="100" blue="60"></color></off_color>
+    <on_color><color red="255" green="0" blue="0"></color></on_color>
+  </widget>
+  <widget type="led" version="2.0.0">
+    <name>LED_91</name>
+    <pv_name>$(P):$(CUB):CH1:FUSE_FAULT</pv_name>
+    <x>801</x><y>441</y><width>20</width><height>20</height>
+    <off_color><color red="60" green="100" blue="60"></color></off_color>
+    <on_color><color red="255" green="0" blue="0"></color></on_color>
+  </widget>
+  <widget type="led" version="2.0.0">
+    <name>LED_92</name>
+    <pv_name>$(P):$(CUB):CH1:DC_OVERVOLTAGE</pv_name>
+    <x>828</x><y>441</y><width>20</width><height>20</height>
+    <off_color><color red="60" green="100" blue="60"></color></off_color>
+    <on_color><color red="255" green="0" blue="0"></color></on_color>
+  </widget>
+  <widget type="led" version="2.0.0">
+    <name>LED_93</name>
+    <pv_name>$(P):$(CUB):CH1:DC_OVERCURRENT</pv_name>
+    <x>855</x><y>441</y><width>20</width><height>20</height>
+    <off_color><color red="60" green="100" blue="60"></color></off_color>
+    <on_color><color red="255" green="0" blue="0"></color></on_color>
+  </widget>
+  <widget type="led" version="2.0.0">
+    <name>LED_94</name>
+    <pv_name>$(P):$(CUB):CH1:COMM_FAIL</pv_name>
+    <x>882</x><y>441</y><width>20</width><height>20</height>
+    <off_color><color red="60" green="100" blue="60"></color></off_color>
+    <on_color><color red="255" green="0" blue="0"></color></on_color>
+  </widget>
+  <widget type="label" version="2.0.0">
+    <name>Label_95</name>
+    <text>CH2</text>
+    <x>25</x><y>470</y><width>50</width><height>22</height>
+    <font><font family="Liberation Sans" style="BOLD" size="14.0"></font></font>
+    <horizontal_alignment>1</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+  </widget>
+  <widget type="textupdate" version="2.0.0">
+    <name>Text Update_96</name>
+    <pv_name>$(P):$(CUB):CH2:STATE_RB</pv_name>
+    <x>75</x><y>470</y><width>130</width><height>22</height>
+    <show_units>true</show_units>
+    <horizontal_alignment>1</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+    <border_alarm_sensitive>true</border_alarm_sensitive>
+  </widget>
+  <widget type="textentry" version="3.0.0">
+    <name>Text Entry_97</name>
+    <pv_name>$(P):$(CUB):CH2:CURRENT_SP</pv_name>
+    <x>210</x><y>470</y><width>80</width><height>22</height>
+    <show_units>true</show_units>
+    <horizontal_alignment>1</horizontal_alignment>
+  </widget>
+  <widget type="textupdate" version="2.0.0">
+    <name>Text Update_98</name>
+    <pv_name>$(P):$(CUB):CH2:SET_CURRENT_RB</pv_name>
+    <x>295</x><y>470</y><width>80</width><height>22</height>
+    <show_units>true</show_units>
+    <horizontal_alignment>1</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+    <border_alarm_sensitive>true</border_alarm_sensitive>
+  </widget>
+  <widget type="textupdate" version="2.0.0">
+    <name>Text Update_99</name>
+    <pv_name>$(P):$(CUB):CH2:CURRENT_RB</pv_name>
+    <x>380</x><y>470</y><width>80</width><height>22</height>
+    <show_units>true</show_units>
+    <horizontal_alignment>1</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+    <border_alarm_sensitive>true</border_alarm_sensitive>
+  </widget>
+  <widget type="textupdate" version="2.0.0">
+    <name>Text Update_100</name>
+    <pv_name>$(P):$(CUB):CH2:VOLTAGE_RB</pv_name>
+    <x>465</x><y>470</y><width>80</width><height>22</height>
+    <show_units>true</show_units>
+    <horizontal_alignment>1</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+    <border_alarm_sensitive>true</border_alarm_sensitive>
+  </widget>
+  <widget type="action_button" version="3.0.0">
+    <name>Action Button_101</name>
+    <actions>
+      <action type="write_pv">
+        <pv_name>$(pv_name)</pv_name>
+        <value>1</value>
+        <description>ON</description>
+      </action>
+    </actions>
+    <pv_name>$(P):$(CUB):CH2:STATE_SP</pv_name>
+    <text>ON</text>
+    <x>550</x><y>470</y><width>60</width><height>22</height>
+    <background_color><color red="150" green="220" blue="150"></color></background_color>
+  </widget>
+  <widget type="action_button" version="3.0.0">
+    <name>Action Button_102</name>
+    <actions>
+      <action type="write_pv">
+        <pv_name>$(pv_name)</pv_name>
+        <value>0</value>
+        <description>OFF</description>
+      </action>
+    </actions>
+    <pv_name>$(P):$(CUB):CH2:STATE_SP</pv_name>
+    <text>OFF</text>
+    <x>613</x><y>470</y><width>60</width><height>22</height>
+    <background_color><color red="240" green="160" blue="160"></color></background_color>
+  </widget>
+  <widget type="action_button" version="3.0.0">
+    <name>Action Button_103</name>
+    <actions>
+      <action type="write_pv">
+        <pv_name>$(pv_name)</pv_name>
+        <value>3</value>
+        <description>RESET</description>
+      </action>
+    </actions>
+    <pv_name>$(P):$(CUB):CH2:STATE_SP</pv_name>
+    <text>RESET</text>
+    <x>676</x><y>470</y><width>64</width><height>22</height>
+    <background_color><color red="210" green="210" blue="210"></color></background_color>
+  </widget>
+  <widget type="led" version="2.0.0">
+    <name>LED_104</name>
+    <pv_name>$(P):$(CUB):CH2:READY</pv_name>
+    <x>747</x><y>471</y><width>20</width><height>20</height>
+    <off_color><color red="255" green="0" blue="0"></color></off_color>
+    <on_color><color red="0" green="200" blue="0"></color></on_color>
+  </widget>
+  <widget type="led" version="2.0.0">
+    <name>LED_105</name>
+    <pv_name>$(P):$(CUB):CH2:BALLAST_OT</pv_name>
+    <x>774</x><y>471</y><width>20</width><height>20</height>
+    <off_color><color red="60" green="100" blue="60"></color></off_color>
+    <on_color><color red="255" green="0" blue="0"></color></on_color>
+  </widget>
+  <widget type="led" version="2.0.0">
+    <name>LED_106</name>
+    <pv_name>$(P):$(CUB):CH2:FUSE_FAULT</pv_name>
+    <x>801</x><y>471</y><width>20</width><height>20</height>
+    <off_color><color red="60" green="100" blue="60"></color></off_color>
+    <on_color><color red="255" green="0" blue="0"></color></on_color>
+  </widget>
+  <widget type="led" version="2.0.0">
+    <name>LED_107</name>
+    <pv_name>$(P):$(CUB):CH2:DC_OVERVOLTAGE</pv_name>
+    <x>828</x><y>471</y><width>20</width><height>20</height>
+    <off_color><color red="60" green="100" blue="60"></color></off_color>
+    <on_color><color red="255" green="0" blue="0"></color></on_color>
+  </widget>
+  <widget type="led" version="2.0.0">
+    <name>LED_108</name>
+    <pv_name>$(P):$(CUB):CH2:DC_OVERCURRENT</pv_name>
+    <x>855</x><y>471</y><width>20</width><height>20</height>
+    <off_color><color red="60" green="100" blue="60"></color></off_color>
+    <on_color><color red="255" green="0" blue="0"></color></on_color>
+  </widget>
+  <widget type="led" version="2.0.0">
+    <name>LED_109</name>
+    <pv_name>$(P):$(CUB):CH2:COMM_FAIL</pv_name>
+    <x>882</x><y>471</y><width>20</width><height>20</height>
+    <off_color><color red="60" green="100" blue="60"></color></off_color>
+    <on_color><color red="255" green="0" blue="0"></color></on_color>
+  </widget>
+  <widget type="label" version="2.0.0">
+    <name>Label_110</name>
+    <text>CH3</text>
+    <x>25</x><y>500</y><width>50</width><height>22</height>
+    <font><font family="Liberation Sans" style="BOLD" size="14.0"></font></font>
+    <horizontal_alignment>1</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+  </widget>
+  <widget type="textupdate" version="2.0.0">
+    <name>Text Update_111</name>
+    <pv_name>$(P):$(CUB):CH3:STATE_RB</pv_name>
+    <x>75</x><y>500</y><width>130</width><height>22</height>
+    <show_units>true</show_units>
+    <horizontal_alignment>1</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+    <border_alarm_sensitive>true</border_alarm_sensitive>
+  </widget>
+  <widget type="textentry" version="3.0.0">
+    <name>Text Entry_112</name>
+    <pv_name>$(P):$(CUB):CH3:CURRENT_SP</pv_name>
+    <x>210</x><y>500</y><width>80</width><height>22</height>
+    <show_units>true</show_units>
+    <horizontal_alignment>1</horizontal_alignment>
+  </widget>
+  <widget type="textupdate" version="2.0.0">
+    <name>Text Update_113</name>
+    <pv_name>$(P):$(CUB):CH3:SET_CURRENT_RB</pv_name>
+    <x>295</x><y>500</y><width>80</width><height>22</height>
+    <show_units>true</show_units>
+    <horizontal_alignment>1</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+    <border_alarm_sensitive>true</border_alarm_sensitive>
+  </widget>
+  <widget type="textupdate" version="2.0.0">
+    <name>Text Update_114</name>
+    <pv_name>$(P):$(CUB):CH3:CURRENT_RB</pv_name>
+    <x>380</x><y>500</y><width>80</width><height>22</height>
+    <show_units>true</show_units>
+    <horizontal_alignment>1</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+    <border_alarm_sensitive>true</border_alarm_sensitive>
+  </widget>
+  <widget type="textupdate" version="2.0.0">
+    <name>Text Update_115</name>
+    <pv_name>$(P):$(CUB):CH3:VOLTAGE_RB</pv_name>
+    <x>465</x><y>500</y><width>80</width><height>22</height>
+    <show_units>true</show_units>
+    <horizontal_alignment>1</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+    <border_alarm_sensitive>true</border_alarm_sensitive>
+  </widget>
+  <widget type="action_button" version="3.0.0">
+    <name>Action Button_116</name>
+    <actions>
+      <action type="write_pv">
+        <pv_name>$(pv_name)</pv_name>
+        <value>1</value>
+        <description>ON</description>
+      </action>
+    </actions>
+    <pv_name>$(P):$(CUB):CH3:STATE_SP</pv_name>
+    <text>ON</text>
+    <x>550</x><y>500</y><width>60</width><height>22</height>
+    <background_color><color red="150" green="220" blue="150"></color></background_color>
+  </widget>
+  <widget type="action_button" version="3.0.0">
+    <name>Action Button_117</name>
+    <actions>
+      <action type="write_pv">
+        <pv_name>$(pv_name)</pv_name>
+        <value>0</value>
+        <description>OFF</description>
+      </action>
+    </actions>
+    <pv_name>$(P):$(CUB):CH3:STATE_SP</pv_name>
+    <text>OFF</text>
+    <x>613</x><y>500</y><width>60</width><height>22</height>
+    <background_color><color red="240" green="160" blue="160"></color></background_color>
+  </widget>
+  <widget type="action_button" version="3.0.0">
+    <name>Action Button_118</name>
+    <actions>
+      <action type="write_pv">
+        <pv_name>$(pv_name)</pv_name>
+        <value>3</value>
+        <description>RESET</description>
+      </action>
+    </actions>
+    <pv_name>$(P):$(CUB):CH3:STATE_SP</pv_name>
+    <text>RESET</text>
+    <x>676</x><y>500</y><width>64</width><height>22</height>
+    <background_color><color red="210" green="210" blue="210"></color></background_color>
+  </widget>
+  <widget type="led" version="2.0.0">
+    <name>LED_119</name>
+    <pv_name>$(P):$(CUB):CH3:READY</pv_name>
+    <x>747</x><y>501</y><width>20</width><height>20</height>
+    <off_color><color red="255" green="0" blue="0"></color></off_color>
+    <on_color><color red="0" green="200" blue="0"></color></on_color>
+  </widget>
+  <widget type="led" version="2.0.0">
+    <name>LED_120</name>
+    <pv_name>$(P):$(CUB):CH3:BALLAST_OT</pv_name>
+    <x>774</x><y>501</y><width>20</width><height>20</height>
+    <off_color><color red="60" green="100" blue="60"></color></off_color>
+    <on_color><color red="255" green="0" blue="0"></color></on_color>
+  </widget>
+  <widget type="led" version="2.0.0">
+    <name>LED_121</name>
+    <pv_name>$(P):$(CUB):CH3:FUSE_FAULT</pv_name>
+    <x>801</x><y>501</y><width>20</width><height>20</height>
+    <off_color><color red="60" green="100" blue="60"></color></off_color>
+    <on_color><color red="255" green="0" blue="0"></color></on_color>
+  </widget>
+  <widget type="led" version="2.0.0">
+    <name>LED_122</name>
+    <pv_name>$(P):$(CUB):CH3:DC_OVERVOLTAGE</pv_name>
+    <x>828</x><y>501</y><width>20</width><height>20</height>
+    <off_color><color red="60" green="100" blue="60"></color></off_color>
+    <on_color><color red="255" green="0" blue="0"></color></on_color>
+  </widget>
+  <widget type="led" version="2.0.0">
+    <name>LED_123</name>
+    <pv_name>$(P):$(CUB):CH3:DC_OVERCURRENT</pv_name>
+    <x>855</x><y>501</y><width>20</width><height>20</height>
+    <off_color><color red="60" green="100" blue="60"></color></off_color>
+    <on_color><color red="255" green="0" blue="0"></color></on_color>
+  </widget>
+  <widget type="led" version="2.0.0">
+    <name>LED_124</name>
+    <pv_name>$(P):$(CUB):CH3:COMM_FAIL</pv_name>
+    <x>882</x><y>501</y><width>20</width><height>20</height>
+    <off_color><color red="60" green="100" blue="60"></color></off_color>
+    <on_color><color red="255" green="0" blue="0"></color></on_color>
+  </widget>
+  <widget type="label" version="2.0.0">
+    <name>Label_125</name>
+    <text>CH4</text>
+    <x>25</x><y>530</y><width>50</width><height>22</height>
+    <font><font family="Liberation Sans" style="BOLD" size="14.0"></font></font>
+    <horizontal_alignment>1</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+  </widget>
+  <widget type="textupdate" version="2.0.0">
+    <name>Text Update_126</name>
+    <pv_name>$(P):$(CUB):CH4:STATE_RB</pv_name>
+    <x>75</x><y>530</y><width>130</width><height>22</height>
+    <show_units>true</show_units>
+    <horizontal_alignment>1</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+    <border_alarm_sensitive>true</border_alarm_sensitive>
+  </widget>
+  <widget type="textentry" version="3.0.0">
+    <name>Text Entry_127</name>
+    <pv_name>$(P):$(CUB):CH4:CURRENT_SP</pv_name>
+    <x>210</x><y>530</y><width>80</width><height>22</height>
+    <show_units>true</show_units>
+    <horizontal_alignment>1</horizontal_alignment>
+  </widget>
+  <widget type="textupdate" version="2.0.0">
+    <name>Text Update_128</name>
+    <pv_name>$(P):$(CUB):CH4:SET_CURRENT_RB</pv_name>
+    <x>295</x><y>530</y><width>80</width><height>22</height>
+    <show_units>true</show_units>
+    <horizontal_alignment>1</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+    <border_alarm_sensitive>true</border_alarm_sensitive>
+  </widget>
+  <widget type="textupdate" version="2.0.0">
+    <name>Text Update_129</name>
+    <pv_name>$(P):$(CUB):CH4:CURRENT_RB</pv_name>
+    <x>380</x><y>530</y><width>80</width><height>22</height>
+    <show_units>true</show_units>
+    <horizontal_alignment>1</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+    <border_alarm_sensitive>true</border_alarm_sensitive>
+  </widget>
+  <widget type="textupdate" version="2.0.0">
+    <name>Text Update_130</name>
+    <pv_name>$(P):$(CUB):CH4:VOLTAGE_RB</pv_name>
+    <x>465</x><y>530</y><width>80</width><height>22</height>
+    <show_units>true</show_units>
+    <horizontal_alignment>1</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+    <border_alarm_sensitive>true</border_alarm_sensitive>
+  </widget>
+  <widget type="action_button" version="3.0.0">
+    <name>Action Button_131</name>
+    <actions>
+      <action type="write_pv">
+        <pv_name>$(pv_name)</pv_name>
+        <value>1</value>
+        <description>ON</description>
+      </action>
+    </actions>
+    <pv_name>$(P):$(CUB):CH4:STATE_SP</pv_name>
+    <text>ON</text>
+    <x>550</x><y>530</y><width>60</width><height>22</height>
+    <background_color><color red="150" green="220" blue="150"></color></background_color>
+  </widget>
+  <widget type="action_button" version="3.0.0">
+    <name>Action Button_132</name>
+    <actions>
+      <action type="write_pv">
+        <pv_name>$(pv_name)</pv_name>
+        <value>0</value>
+        <description>OFF</description>
+      </action>
+    </actions>
+    <pv_name>$(P):$(CUB):CH4:STATE_SP</pv_name>
+    <text>OFF</text>
+    <x>613</x><y>530</y><width>60</width><height>22</height>
+    <background_color><color red="240" green="160" blue="160"></color></background_color>
+  </widget>
+  <widget type="action_button" version="3.0.0">
+    <name>Action Button_133</name>
+    <actions>
+      <action type="write_pv">
+        <pv_name>$(pv_name)</pv_name>
+        <value>3</value>
+        <description>RESET</description>
+      </action>
+    </actions>
+    <pv_name>$(P):$(CUB):CH4:STATE_SP</pv_name>
+    <text>RESET</text>
+    <x>676</x><y>530</y><width>64</width><height>22</height>
+    <background_color><color red="210" green="210" blue="210"></color></background_color>
+  </widget>
+  <widget type="led" version="2.0.0">
+    <name>LED_134</name>
+    <pv_name>$(P):$(CUB):CH4:READY</pv_name>
+    <x>747</x><y>531</y><width>20</width><height>20</height>
+    <off_color><color red="255" green="0" blue="0"></color></off_color>
+    <on_color><color red="0" green="200" blue="0"></color></on_color>
+  </widget>
+  <widget type="led" version="2.0.0">
+    <name>LED_135</name>
+    <pv_name>$(P):$(CUB):CH4:BALLAST_OT</pv_name>
+    <x>774</x><y>531</y><width>20</width><height>20</height>
+    <off_color><color red="60" green="100" blue="60"></color></off_color>
+    <on_color><color red="255" green="0" blue="0"></color></on_color>
+  </widget>
+  <widget type="led" version="2.0.0">
+    <name>LED_136</name>
+    <pv_name>$(P):$(CUB):CH4:FUSE_FAULT</pv_name>
+    <x>801</x><y>531</y><width>20</width><height>20</height>
+    <off_color><color red="60" green="100" blue="60"></color></off_color>
+    <on_color><color red="255" green="0" blue="0"></color></on_color>
+  </widget>
+  <widget type="led" version="2.0.0">
+    <name>LED_137</name>
+    <pv_name>$(P):$(CUB):CH4:DC_OVERVOLTAGE</pv_name>
+    <x>828</x><y>531</y><width>20</width><height>20</height>
+    <off_color><color red="60" green="100" blue="60"></color></off_color>
+    <on_color><color red="255" green="0" blue="0"></color></on_color>
+  </widget>
+  <widget type="led" version="2.0.0">
+    <name>LED_138</name>
+    <pv_name>$(P):$(CUB):CH4:DC_OVERCURRENT</pv_name>
+    <x>855</x><y>531</y><width>20</width><height>20</height>
+    <off_color><color red="60" green="100" blue="60"></color></off_color>
+    <on_color><color red="255" green="0" blue="0"></color></on_color>
+  </widget>
+  <widget type="led" version="2.0.0">
+    <name>LED_139</name>
+    <pv_name>$(P):$(CUB):CH4:COMM_FAIL</pv_name>
+    <x>882</x><y>531</y><width>20</width><height>20</height>
+    <off_color><color red="60" green="100" blue="60"></color></off_color>
+    <on_color><color red="255" green="0" blue="0"></color></on_color>
+  </widget>
+  <widget type="label" version="2.0.0">
+    <name>Label_140</name>
+    <text>CH5</text>
+    <x>25</x><y>560</y><width>50</width><height>22</height>
+    <font><font family="Liberation Sans" style="BOLD" size="14.0"></font></font>
+    <horizontal_alignment>1</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+  </widget>
+  <widget type="textupdate" version="2.0.0">
+    <name>Text Update_141</name>
+    <pv_name>$(P):$(CUB):CH5:STATE_RB</pv_name>
+    <x>75</x><y>560</y><width>130</width><height>22</height>
+    <show_units>true</show_units>
+    <horizontal_alignment>1</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+    <border_alarm_sensitive>true</border_alarm_sensitive>
+  </widget>
+  <widget type="textentry" version="3.0.0">
+    <name>Text Entry_142</name>
+    <pv_name>$(P):$(CUB):CH5:CURRENT_SP</pv_name>
+    <x>210</x><y>560</y><width>80</width><height>22</height>
+    <show_units>true</show_units>
+    <horizontal_alignment>1</horizontal_alignment>
+  </widget>
+  <widget type="textupdate" version="2.0.0">
+    <name>Text Update_143</name>
+    <pv_name>$(P):$(CUB):CH5:SET_CURRENT_RB</pv_name>
+    <x>295</x><y>560</y><width>80</width><height>22</height>
+    <show_units>true</show_units>
+    <horizontal_alignment>1</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+    <border_alarm_sensitive>true</border_alarm_sensitive>
+  </widget>
+  <widget type="textupdate" version="2.0.0">
+    <name>Text Update_144</name>
+    <pv_name>$(P):$(CUB):CH5:CURRENT_RB</pv_name>
+    <x>380</x><y>560</y><width>80</width><height>22</height>
+    <show_units>true</show_units>
+    <horizontal_alignment>1</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+    <border_alarm_sensitive>true</border_alarm_sensitive>
+  </widget>
+  <widget type="textupdate" version="2.0.0">
+    <name>Text Update_145</name>
+    <pv_name>$(P):$(CUB):CH5:VOLTAGE_RB</pv_name>
+    <x>465</x><y>560</y><width>80</width><height>22</height>
+    <show_units>true</show_units>
+    <horizontal_alignment>1</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+    <border_alarm_sensitive>true</border_alarm_sensitive>
+  </widget>
+  <widget type="action_button" version="3.0.0">
+    <name>Action Button_146</name>
+    <actions>
+      <action type="write_pv">
+        <pv_name>$(pv_name)</pv_name>
+        <value>1</value>
+        <description>ON</description>
+      </action>
+    </actions>
+    <pv_name>$(P):$(CUB):CH5:STATE_SP</pv_name>
+    <text>ON</text>
+    <x>550</x><y>560</y><width>60</width><height>22</height>
+    <background_color><color red="150" green="220" blue="150"></color></background_color>
+  </widget>
+  <widget type="action_button" version="3.0.0">
+    <name>Action Button_147</name>
+    <actions>
+      <action type="write_pv">
+        <pv_name>$(pv_name)</pv_name>
+        <value>0</value>
+        <description>OFF</description>
+      </action>
+    </actions>
+    <pv_name>$(P):$(CUB):CH5:STATE_SP</pv_name>
+    <text>OFF</text>
+    <x>613</x><y>560</y><width>60</width><height>22</height>
+    <background_color><color red="240" green="160" blue="160"></color></background_color>
+  </widget>
+  <widget type="action_button" version="3.0.0">
+    <name>Action Button_148</name>
+    <actions>
+      <action type="write_pv">
+        <pv_name>$(pv_name)</pv_name>
+        <value>3</value>
+        <description>RESET</description>
+      </action>
+    </actions>
+    <pv_name>$(P):$(CUB):CH5:STATE_SP</pv_name>
+    <text>RESET</text>
+    <x>676</x><y>560</y><width>64</width><height>22</height>
+    <background_color><color red="210" green="210" blue="210"></color></background_color>
+  </widget>
+  <widget type="led" version="2.0.0">
+    <name>LED_149</name>
+    <pv_name>$(P):$(CUB):CH5:READY</pv_name>
+    <x>747</x><y>561</y><width>20</width><height>20</height>
+    <off_color><color red="255" green="0" blue="0"></color></off_color>
+    <on_color><color red="0" green="200" blue="0"></color></on_color>
+  </widget>
+  <widget type="led" version="2.0.0">
+    <name>LED_150</name>
+    <pv_name>$(P):$(CUB):CH5:BALLAST_OT</pv_name>
+    <x>774</x><y>561</y><width>20</width><height>20</height>
+    <off_color><color red="60" green="100" blue="60"></color></off_color>
+    <on_color><color red="255" green="0" blue="0"></color></on_color>
+  </widget>
+  <widget type="led" version="2.0.0">
+    <name>LED_151</name>
+    <pv_name>$(P):$(CUB):CH5:FUSE_FAULT</pv_name>
+    <x>801</x><y>561</y><width>20</width><height>20</height>
+    <off_color><color red="60" green="100" blue="60"></color></off_color>
+    <on_color><color red="255" green="0" blue="0"></color></on_color>
+  </widget>
+  <widget type="led" version="2.0.0">
+    <name>LED_152</name>
+    <pv_name>$(P):$(CUB):CH5:DC_OVERVOLTAGE</pv_name>
+    <x>828</x><y>561</y><width>20</width><height>20</height>
+    <off_color><color red="60" green="100" blue="60"></color></off_color>
+    <on_color><color red="255" green="0" blue="0"></color></on_color>
+  </widget>
+  <widget type="led" version="2.0.0">
+    <name>LED_153</name>
+    <pv_name>$(P):$(CUB):CH5:DC_OVERCURRENT</pv_name>
+    <x>855</x><y>561</y><width>20</width><height>20</height>
+    <off_color><color red="60" green="100" blue="60"></color></off_color>
+    <on_color><color red="255" green="0" blue="0"></color></on_color>
+  </widget>
+  <widget type="led" version="2.0.0">
+    <name>LED_154</name>
+    <pv_name>$(P):$(CUB):CH5:COMM_FAIL</pv_name>
+    <x>882</x><y>561</y><width>20</width><height>20</height>
+    <off_color><color red="60" green="100" blue="60"></color></off_color>
+    <on_color><color red="255" green="0" blue="0"></color></on_color>
+  </widget>
+  <widget type="label" version="2.0.0">
+    <name>Label_155</name>
+    <text>CH6</text>
+    <x>25</x><y>590</y><width>50</width><height>22</height>
+    <font><font family="Liberation Sans" style="BOLD" size="14.0"></font></font>
+    <horizontal_alignment>1</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+  </widget>
+  <widget type="textupdate" version="2.0.0">
+    <name>Text Update_156</name>
+    <pv_name>$(P):$(CUB):CH6:STATE_RB</pv_name>
+    <x>75</x><y>590</y><width>130</width><height>22</height>
+    <show_units>true</show_units>
+    <horizontal_alignment>1</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+    <border_alarm_sensitive>true</border_alarm_sensitive>
+  </widget>
+  <widget type="textentry" version="3.0.0">
+    <name>Text Entry_157</name>
+    <pv_name>$(P):$(CUB):CH6:CURRENT_SP</pv_name>
+    <x>210</x><y>590</y><width>80</width><height>22</height>
+    <show_units>true</show_units>
+    <horizontal_alignment>1</horizontal_alignment>
+  </widget>
+  <widget type="textupdate" version="2.0.0">
+    <name>Text Update_158</name>
+    <pv_name>$(P):$(CUB):CH6:SET_CURRENT_RB</pv_name>
+    <x>295</x><y>590</y><width>80</width><height>22</height>
+    <show_units>true</show_units>
+    <horizontal_alignment>1</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+    <border_alarm_sensitive>true</border_alarm_sensitive>
+  </widget>
+  <widget type="textupdate" version="2.0.0">
+    <name>Text Update_159</name>
+    <pv_name>$(P):$(CUB):CH6:CURRENT_RB</pv_name>
+    <x>380</x><y>590</y><width>80</width><height>22</height>
+    <show_units>true</show_units>
+    <horizontal_alignment>1</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+    <border_alarm_sensitive>true</border_alarm_sensitive>
+  </widget>
+  <widget type="textupdate" version="2.0.0">
+    <name>Text Update_160</name>
+    <pv_name>$(P):$(CUB):CH6:VOLTAGE_RB</pv_name>
+    <x>465</x><y>590</y><width>80</width><height>22</height>
+    <show_units>true</show_units>
+    <horizontal_alignment>1</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+    <border_alarm_sensitive>true</border_alarm_sensitive>
+  </widget>
+  <widget type="action_button" version="3.0.0">
+    <name>Action Button_161</name>
+    <actions>
+      <action type="write_pv">
+        <pv_name>$(pv_name)</pv_name>
+        <value>1</value>
+        <description>ON</description>
+      </action>
+    </actions>
+    <pv_name>$(P):$(CUB):CH6:STATE_SP</pv_name>
+    <text>ON</text>
+    <x>550</x><y>590</y><width>60</width><height>22</height>
+    <background_color><color red="150" green="220" blue="150"></color></background_color>
+  </widget>
+  <widget type="action_button" version="3.0.0">
+    <name>Action Button_162</name>
+    <actions>
+      <action type="write_pv">
+        <pv_name>$(pv_name)</pv_name>
+        <value>0</value>
+        <description>OFF</description>
+      </action>
+    </actions>
+    <pv_name>$(P):$(CUB):CH6:STATE_SP</pv_name>
+    <text>OFF</text>
+    <x>613</x><y>590</y><width>60</width><height>22</height>
+    <background_color><color red="240" green="160" blue="160"></color></background_color>
+  </widget>
+  <widget type="action_button" version="3.0.0">
+    <name>Action Button_163</name>
+    <actions>
+      <action type="write_pv">
+        <pv_name>$(pv_name)</pv_name>
+        <value>3</value>
+        <description>RESET</description>
+      </action>
+    </actions>
+    <pv_name>$(P):$(CUB):CH6:STATE_SP</pv_name>
+    <text>RESET</text>
+    <x>676</x><y>590</y><width>64</width><height>22</height>
+    <background_color><color red="210" green="210" blue="210"></color></background_color>
+  </widget>
+  <widget type="led" version="2.0.0">
+    <name>LED_164</name>
+    <pv_name>$(P):$(CUB):CH6:READY</pv_name>
+    <x>747</x><y>591</y><width>20</width><height>20</height>
+    <off_color><color red="255" green="0" blue="0"></color></off_color>
+    <on_color><color red="0" green="200" blue="0"></color></on_color>
+  </widget>
+  <widget type="led" version="2.0.0">
+    <name>LED_165</name>
+    <pv_name>$(P):$(CUB):CH6:BALLAST_OT</pv_name>
+    <x>774</x><y>591</y><width>20</width><height>20</height>
+    <off_color><color red="60" green="100" blue="60"></color></off_color>
+    <on_color><color red="255" green="0" blue="0"></color></on_color>
+  </widget>
+  <widget type="led" version="2.0.0">
+    <name>LED_166</name>
+    <pv_name>$(P):$(CUB):CH6:FUSE_FAULT</pv_name>
+    <x>801</x><y>591</y><width>20</width><height>20</height>
+    <off_color><color red="60" green="100" blue="60"></color></off_color>
+    <on_color><color red="255" green="0" blue="0"></color></on_color>
+  </widget>
+  <widget type="led" version="2.0.0">
+    <name>LED_167</name>
+    <pv_name>$(P):$(CUB):CH6:DC_OVERVOLTAGE</pv_name>
+    <x>828</x><y>591</y><width>20</width><height>20</height>
+    <off_color><color red="60" green="100" blue="60"></color></off_color>
+    <on_color><color red="255" green="0" blue="0"></color></on_color>
+  </widget>
+  <widget type="led" version="2.0.0">
+    <name>LED_168</name>
+    <pv_name>$(P):$(CUB):CH6:DC_OVERCURRENT</pv_name>
+    <x>855</x><y>591</y><width>20</width><height>20</height>
+    <off_color><color red="60" green="100" blue="60"></color></off_color>
+    <on_color><color red="255" green="0" blue="0"></color></on_color>
+  </widget>
+  <widget type="led" version="2.0.0">
+    <name>LED_169</name>
+    <pv_name>$(P):$(CUB):CH6:COMM_FAIL</pv_name>
+    <x>882</x><y>591</y><width>20</width><height>20</height>
+    <off_color><color red="60" green="100" blue="60"></color></off_color>
+    <on_color><color red="255" green="0" blue="0"></color></on_color>
+  </widget>
+  <widget type="label" version="2.0.0">
+    <name>Label_170</name>
+    <text>CH7</text>
+    <x>25</x><y>620</y><width>50</width><height>22</height>
+    <font><font family="Liberation Sans" style="BOLD" size="14.0"></font></font>
+    <horizontal_alignment>1</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+  </widget>
+  <widget type="textupdate" version="2.0.0">
+    <name>Text Update_171</name>
+    <pv_name>$(P):$(CUB):CH7:STATE_RB</pv_name>
+    <x>75</x><y>620</y><width>130</width><height>22</height>
+    <show_units>true</show_units>
+    <horizontal_alignment>1</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+    <border_alarm_sensitive>true</border_alarm_sensitive>
+  </widget>
+  <widget type="textentry" version="3.0.0">
+    <name>Text Entry_172</name>
+    <pv_name>$(P):$(CUB):CH7:CURRENT_SP</pv_name>
+    <x>210</x><y>620</y><width>80</width><height>22</height>
+    <show_units>true</show_units>
+    <horizontal_alignment>1</horizontal_alignment>
+  </widget>
+  <widget type="textupdate" version="2.0.0">
+    <name>Text Update_173</name>
+    <pv_name>$(P):$(CUB):CH7:SET_CURRENT_RB</pv_name>
+    <x>295</x><y>620</y><width>80</width><height>22</height>
+    <show_units>true</show_units>
+    <horizontal_alignment>1</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+    <border_alarm_sensitive>true</border_alarm_sensitive>
+  </widget>
+  <widget type="textupdate" version="2.0.0">
+    <name>Text Update_174</name>
+    <pv_name>$(P):$(CUB):CH7:CURRENT_RB</pv_name>
+    <x>380</x><y>620</y><width>80</width><height>22</height>
+    <show_units>true</show_units>
+    <horizontal_alignment>1</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+    <border_alarm_sensitive>true</border_alarm_sensitive>
+  </widget>
+  <widget type="textupdate" version="2.0.0">
+    <name>Text Update_175</name>
+    <pv_name>$(P):$(CUB):CH7:VOLTAGE_RB</pv_name>
+    <x>465</x><y>620</y><width>80</width><height>22</height>
+    <show_units>true</show_units>
+    <horizontal_alignment>1</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+    <border_alarm_sensitive>true</border_alarm_sensitive>
+  </widget>
+  <widget type="action_button" version="3.0.0">
+    <name>Action Button_176</name>
+    <actions>
+      <action type="write_pv">
+        <pv_name>$(pv_name)</pv_name>
+        <value>1</value>
+        <description>ON</description>
+      </action>
+    </actions>
+    <pv_name>$(P):$(CUB):CH7:STATE_SP</pv_name>
+    <text>ON</text>
+    <x>550</x><y>620</y><width>60</width><height>22</height>
+    <background_color><color red="150" green="220" blue="150"></color></background_color>
+  </widget>
+  <widget type="action_button" version="3.0.0">
+    <name>Action Button_177</name>
+    <actions>
+      <action type="write_pv">
+        <pv_name>$(pv_name)</pv_name>
+        <value>0</value>
+        <description>OFF</description>
+      </action>
+    </actions>
+    <pv_name>$(P):$(CUB):CH7:STATE_SP</pv_name>
+    <text>OFF</text>
+    <x>613</x><y>620</y><width>60</width><height>22</height>
+    <background_color><color red="240" green="160" blue="160"></color></background_color>
+  </widget>
+  <widget type="action_button" version="3.0.0">
+    <name>Action Button_178</name>
+    <actions>
+      <action type="write_pv">
+        <pv_name>$(pv_name)</pv_name>
+        <value>3</value>
+        <description>RESET</description>
+      </action>
+    </actions>
+    <pv_name>$(P):$(CUB):CH7:STATE_SP</pv_name>
+    <text>RESET</text>
+    <x>676</x><y>620</y><width>64</width><height>22</height>
+    <background_color><color red="210" green="210" blue="210"></color></background_color>
+  </widget>
+  <widget type="led" version="2.0.0">
+    <name>LED_179</name>
+    <pv_name>$(P):$(CUB):CH7:READY</pv_name>
+    <x>747</x><y>621</y><width>20</width><height>20</height>
+    <off_color><color red="255" green="0" blue="0"></color></off_color>
+    <on_color><color red="0" green="200" blue="0"></color></on_color>
+  </widget>
+  <widget type="led" version="2.0.0">
+    <name>LED_180</name>
+    <pv_name>$(P):$(CUB):CH7:BALLAST_OT</pv_name>
+    <x>774</x><y>621</y><width>20</width><height>20</height>
+    <off_color><color red="60" green="100" blue="60"></color></off_color>
+    <on_color><color red="255" green="0" blue="0"></color></on_color>
+  </widget>
+  <widget type="led" version="2.0.0">
+    <name>LED_181</name>
+    <pv_name>$(P):$(CUB):CH7:FUSE_FAULT</pv_name>
+    <x>801</x><y>621</y><width>20</width><height>20</height>
+    <off_color><color red="60" green="100" blue="60"></color></off_color>
+    <on_color><color red="255" green="0" blue="0"></color></on_color>
+  </widget>
+  <widget type="led" version="2.0.0">
+    <name>LED_182</name>
+    <pv_name>$(P):$(CUB):CH7:DC_OVERVOLTAGE</pv_name>
+    <x>828</x><y>621</y><width>20</width><height>20</height>
+    <off_color><color red="60" green="100" blue="60"></color></off_color>
+    <on_color><color red="255" green="0" blue="0"></color></on_color>
+  </widget>
+  <widget type="led" version="2.0.0">
+    <name>LED_183</name>
+    <pv_name>$(P):$(CUB):CH7:DC_OVERCURRENT</pv_name>
+    <x>855</x><y>621</y><width>20</width><height>20</height>
+    <off_color><color red="60" green="100" blue="60"></color></off_color>
+    <on_color><color red="255" green="0" blue="0"></color></on_color>
+  </widget>
+  <widget type="led" version="2.0.0">
+    <name>LED_184</name>
+    <pv_name>$(P):$(CUB):CH7:COMM_FAIL</pv_name>
+    <x>882</x><y>621</y><width>20</width><height>20</height>
+    <off_color><color red="60" green="100" blue="60"></color></off_color>
+    <on_color><color red="255" green="0" blue="0"></color></on_color>
+  </widget>
+  <widget type="label" version="2.0.0">
+    <name>Label_185</name>
+    <text>CH8</text>
+    <x>25</x><y>650</y><width>50</width><height>22</height>
+    <font><font family="Liberation Sans" style="BOLD" size="14.0"></font></font>
+    <horizontal_alignment>1</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+  </widget>
+  <widget type="textupdate" version="2.0.0">
+    <name>Text Update_186</name>
+    <pv_name>$(P):$(CUB):CH8:STATE_RB</pv_name>
+    <x>75</x><y>650</y><width>130</width><height>22</height>
+    <show_units>true</show_units>
+    <horizontal_alignment>1</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+    <border_alarm_sensitive>true</border_alarm_sensitive>
+  </widget>
+  <widget type="textentry" version="3.0.0">
+    <name>Text Entry_187</name>
+    <pv_name>$(P):$(CUB):CH8:CURRENT_SP</pv_name>
+    <x>210</x><y>650</y><width>80</width><height>22</height>
+    <show_units>true</show_units>
+    <horizontal_alignment>1</horizontal_alignment>
+  </widget>
+  <widget type="textupdate" version="2.0.0">
+    <name>Text Update_188</name>
+    <pv_name>$(P):$(CUB):CH8:SET_CURRENT_RB</pv_name>
+    <x>295</x><y>650</y><width>80</width><height>22</height>
+    <show_units>true</show_units>
+    <horizontal_alignment>1</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+    <border_alarm_sensitive>true</border_alarm_sensitive>
+  </widget>
+  <widget type="textupdate" version="2.0.0">
+    <name>Text Update_189</name>
+    <pv_name>$(P):$(CUB):CH8:CURRENT_RB</pv_name>
+    <x>380</x><y>650</y><width>80</width><height>22</height>
+    <show_units>true</show_units>
+    <horizontal_alignment>1</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+    <border_alarm_sensitive>true</border_alarm_sensitive>
+  </widget>
+  <widget type="textupdate" version="2.0.0">
+    <name>Text Update_190</name>
+    <pv_name>$(P):$(CUB):CH8:VOLTAGE_RB</pv_name>
+    <x>465</x><y>650</y><width>80</width><height>22</height>
+    <show_units>true</show_units>
+    <horizontal_alignment>1</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+    <border_alarm_sensitive>true</border_alarm_sensitive>
+  </widget>
+  <widget type="action_button" version="3.0.0">
+    <name>Action Button_191</name>
+    <actions>
+      <action type="write_pv">
+        <pv_name>$(pv_name)</pv_name>
+        <value>1</value>
+        <description>ON</description>
+      </action>
+    </actions>
+    <pv_name>$(P):$(CUB):CH8:STATE_SP</pv_name>
+    <text>ON</text>
+    <x>550</x><y>650</y><width>60</width><height>22</height>
+    <background_color><color red="150" green="220" blue="150"></color></background_color>
+  </widget>
+  <widget type="action_button" version="3.0.0">
+    <name>Action Button_192</name>
+    <actions>
+      <action type="write_pv">
+        <pv_name>$(pv_name)</pv_name>
+        <value>0</value>
+        <description>OFF</description>
+      </action>
+    </actions>
+    <pv_name>$(P):$(CUB):CH8:STATE_SP</pv_name>
+    <text>OFF</text>
+    <x>613</x><y>650</y><width>60</width><height>22</height>
+    <background_color><color red="240" green="160" blue="160"></color></background_color>
+  </widget>
+  <widget type="action_button" version="3.0.0">
+    <name>Action Button_193</name>
+    <actions>
+      <action type="write_pv">
+        <pv_name>$(pv_name)</pv_name>
+        <value>3</value>
+        <description>RESET</description>
+      </action>
+    </actions>
+    <pv_name>$(P):$(CUB):CH8:STATE_SP</pv_name>
+    <text>RESET</text>
+    <x>676</x><y>650</y><width>64</width><height>22</height>
+    <background_color><color red="210" green="210" blue="210"></color></background_color>
+  </widget>
+  <widget type="led" version="2.0.0">
+    <name>LED_194</name>
+    <pv_name>$(P):$(CUB):CH8:READY</pv_name>
+    <x>747</x><y>651</y><width>20</width><height>20</height>
+    <off_color><color red="255" green="0" blue="0"></color></off_color>
+    <on_color><color red="0" green="200" blue="0"></color></on_color>
+  </widget>
+  <widget type="led" version="2.0.0">
+    <name>LED_195</name>
+    <pv_name>$(P):$(CUB):CH8:BALLAST_OT</pv_name>
+    <x>774</x><y>651</y><width>20</width><height>20</height>
+    <off_color><color red="60" green="100" blue="60"></color></off_color>
+    <on_color><color red="255" green="0" blue="0"></color></on_color>
+  </widget>
+  <widget type="led" version="2.0.0">
+    <name>LED_196</name>
+    <pv_name>$(P):$(CUB):CH8:FUSE_FAULT</pv_name>
+    <x>801</x><y>651</y><width>20</width><height>20</height>
+    <off_color><color red="60" green="100" blue="60"></color></off_color>
+    <on_color><color red="255" green="0" blue="0"></color></on_color>
+  </widget>
+  <widget type="led" version="2.0.0">
+    <name>LED_197</name>
+    <pv_name>$(P):$(CUB):CH8:DC_OVERVOLTAGE</pv_name>
+    <x>828</x><y>651</y><width>20</width><height>20</height>
+    <off_color><color red="60" green="100" blue="60"></color></off_color>
+    <on_color><color red="255" green="0" blue="0"></color></on_color>
+  </widget>
+  <widget type="led" version="2.0.0">
+    <name>LED_198</name>
+    <pv_name>$(P):$(CUB):CH8:DC_OVERCURRENT</pv_name>
+    <x>855</x><y>651</y><width>20</width><height>20</height>
+    <off_color><color red="60" green="100" blue="60"></color></off_color>
+    <on_color><color red="255" green="0" blue="0"></color></on_color>
+  </widget>
+  <widget type="led" version="2.0.0">
+    <name>LED_199</name>
+    <pv_name>$(P):$(CUB):CH8:COMM_FAIL</pv_name>
+    <x>882</x><y>651</y><width>20</width><height>20</height>
+    <off_color><color red="60" green="100" blue="60"></color></off_color>
+    <on_color><color red="255" green="0" blue="0"></color></on_color>
+  </widget>
+</display>

@@ -1,0 +1,459 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<display version="2.0.0">
+  <name>Hazemeyer CITBus $(R)</name>
+  <macros><CUB>CITA1001</CUB></macros>
+  <width>560</width>
+  <height>580</height>
+  <widget type="label" version="2.0.0">
+    <name>Label_1</name>
+    <text>Hazemeyer CITBus  $(R)</text>
+    <x>10</x><y>5</y><width>540</width><height>34</height>
+    <font><font family="Liberation Sans" style="BOLD" size="22.0"></font></font>
+    <horizontal_alignment>0</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+  </widget>
+  <widget type="group" version="2.0.0">
+    <name>State</name>
+    <x>10</x><y>45</y><width>540</width><height>150</height>
+  </widget>
+  <widget type="label" version="2.0.0">
+    <name>Label_2</name>
+    <text>State</text>
+    <x>25</x><y>75</y><width>120</width><height>22</height>
+    <font><font family="Liberation Sans" style="REGULAR" size="14.0"></font></font>
+    <horizontal_alignment>0</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+  </widget>
+  <widget type="textupdate" version="2.0.0">
+    <name>Text Update_3</name>
+    <pv_name>$(P):$(R):STATE_RB</pv_name>
+    <x>145</x><y>75</y><width>160</width><height>22</height>
+    <show_units>true</show_units>
+    <horizontal_alignment>1</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+    <border_alarm_sensitive>true</border_alarm_sensitive>
+  </widget>
+  <widget type="label" version="2.0.0">
+    <name>Label_4</name>
+    <text>Loc/Rem</text>
+    <x>320</x><y>75</y><width>80</width><height>22</height>
+    <font><font family="Liberation Sans" style="REGULAR" size="14.0"></font></font>
+    <horizontal_alignment>0</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+  </widget>
+  <widget type="textupdate" version="2.0.0">
+    <name>Text Update_5</name>
+    <pv_name>$(P):$(R):LOC_REM</pv_name>
+    <x>400</x><y>75</y><width>130</width><height>22</height>
+    <show_units>true</show_units>
+    <horizontal_alignment>1</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+    <border_alarm_sensitive>true</border_alarm_sensitive>
+  </widget>
+  <widget type="label" version="2.0.0">
+    <name>Label_6</name>
+    <text>Command</text>
+    <x>25</x><y>102</y><width>120</width><height>22</height>
+    <font><font family="Liberation Sans" style="REGULAR" size="14.0"></font></font>
+    <horizontal_alignment>0</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+  </widget>
+  <widget type="action_button" version="3.0.0">
+    <name>Action Button_7</name>
+    <actions>
+      <action type="write_pv">
+        <pv_name>$(pv_name)</pv_name>
+        <value>1</value>
+        <description>ON</description>
+      </action>
+    </actions>
+    <pv_name>$(P):$(R):STATE_SP</pv_name>
+    <text>ON</text>
+    <x>145</x><y>102</y><width>90</width><height>22</height>
+    <background_color><color red="150" green="220" blue="150"></color></background_color>
+  </widget>
+  <widget type="action_button" version="3.0.0">
+    <name>Action Button_8</name>
+    <actions>
+      <action type="write_pv">
+        <pv_name>$(pv_name)</pv_name>
+        <value>0</value>
+        <description>OFF</description>
+      </action>
+    </actions>
+    <pv_name>$(P):$(R):STATE_SP</pv_name>
+    <text>OFF</text>
+    <x>240</x><y>102</y><width>90</width><height>22</height>
+    <background_color><color red="240" green="160" blue="160"></color></background_color>
+  </widget>
+  <widget type="action_button" version="3.0.0">
+    <name>Action Button_9</name>
+    <actions>
+      <action type="write_pv">
+        <pv_name>$(pv_name)</pv_name>
+        <value>3</value>
+        <description>RESET</description>
+      </action>
+    </actions>
+    <pv_name>$(P):$(R):STATE_SP</pv_name>
+    <text>RESET</text>
+    <x>335</x><y>102</y><width>90</width><height>22</height>
+    <background_color><color red="210" green="210" blue="210"></color></background_color>
+  </widget>
+  <widget type="label" version="2.0.0">
+    <name>Label_10</name>
+    <text>Commanded</text>
+    <x>25</x><y>129</y><width>120</width><height>22</height>
+    <font><font family="Liberation Sans" style="REGULAR" size="14.0"></font></font>
+    <horizontal_alignment>0</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+  </widget>
+  <widget type="textupdate" version="2.0.0">
+    <name>Text Update_11</name>
+    <pv_name>$(P):$(R):STATE_SP</pv_name>
+    <x>145</x><y>129</y><width>160</width><height>22</height>
+    <show_units>true</show_units>
+    <horizontal_alignment>1</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+    <border_alarm_sensitive>true</border_alarm_sensitive>
+  </widget>
+  <widget type="label" version="2.0.0">
+    <name>Label_12</name>
+    <text>Cubicle $(CUB)</text>
+    <x>25</x><y>156</y><width>120</width><height>22</height>
+    <font><font family="Liberation Sans" style="REGULAR" size="14.0"></font></font>
+    <horizontal_alignment>0</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+  </widget>
+  <widget type="textupdate" version="2.0.0">
+    <name>Text Update_13</name>
+    <pv_name>$(P):$(CUB):STATE_RB</pv_name>
+    <x>145</x><y>156</y><width>160</width><height>22</height>
+    <show_units>true</show_units>
+    <horizontal_alignment>1</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+    <border_alarm_sensitive>true</border_alarm_sensitive>
+  </widget>
+  <widget type="group" version="2.0.0">
+    <name>Output</name>
+    <x>10</x><y>205</y><width>540</width><height>150</height>
+  </widget>
+  <widget type="label" version="2.0.0">
+    <name>Label_14</name>
+    <text>Current setpoint</text>
+    <x>25</x><y>235</y><width>120</width><height>22</height>
+    <font><font family="Liberation Sans" style="REGULAR" size="14.0"></font></font>
+    <horizontal_alignment>0</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+  </widget>
+  <widget type="textentry" version="3.0.0">
+    <name>Text Entry_15</name>
+    <pv_name>$(P):$(R):CURRENT_SP</pv_name>
+    <x>145</x><y>235</y><width>130</width><height>22</height>
+    <show_units>true</show_units>
+    <horizontal_alignment>1</horizontal_alignment>
+  </widget>
+  <widget type="label" version="2.0.0">
+    <name>Label_16</name>
+    <text>Set readback</text>
+    <x>290</x><y>235</y><width>110</width><height>22</height>
+    <font><font family="Liberation Sans" style="REGULAR" size="14.0"></font></font>
+    <horizontal_alignment>0</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+  </widget>
+  <widget type="textupdate" version="2.0.0">
+    <name>Text Update_17</name>
+    <pv_name>$(P):$(R):SET_CURRENT_RB</pv_name>
+    <x>400</x><y>235</y><width>130</width><height>22</height>
+    <show_units>true</show_units>
+    <horizontal_alignment>1</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+    <border_alarm_sensitive>true</border_alarm_sensitive>
+  </widget>
+  <widget type="label" version="2.0.0">
+    <name>Label_18</name>
+    <text>Current</text>
+    <x>25</x><y>262</y><width>120</width><height>22</height>
+    <font><font family="Liberation Sans" style="REGULAR" size="14.0"></font></font>
+    <horizontal_alignment>0</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+  </widget>
+  <widget type="textupdate" version="2.0.0">
+    <name>Text Update_19</name>
+    <pv_name>$(P):$(R):CURRENT_RB</pv_name>
+    <x>145</x><y>262</y><width>130</width><height>22</height>
+    <show_units>true</show_units>
+    <horizontal_alignment>1</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+    <border_alarm_sensitive>true</border_alarm_sensitive>
+  </widget>
+  <widget type="label" version="2.0.0">
+    <name>Label_20</name>
+    <text>Voltage</text>
+    <x>290</x><y>262</y><width>110</width><height>22</height>
+    <font><font family="Liberation Sans" style="REGULAR" size="14.0"></font></font>
+    <horizontal_alignment>0</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+  </widget>
+  <widget type="textupdate" version="2.0.0">
+    <name>Text Update_21</name>
+    <pv_name>$(P):$(R):VOLTAGE_RB</pv_name>
+    <x>400</x><y>262</y><width>130</width><height>22</height>
+    <show_units>true</show_units>
+    <horizontal_alignment>1</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+    <border_alarm_sensitive>true</border_alarm_sensitive>
+  </widget>
+  <widget type="label" version="2.0.0">
+    <name>Label_22</name>
+    <text>Raw I / V</text>
+    <x>25</x><y>289</y><width>120</width><height>22</height>
+    <font><font family="Liberation Sans" style="REGULAR" size="14.0"></font></font>
+    <horizontal_alignment>0</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+  </widget>
+  <widget type="textupdate" version="2.0.0">
+    <name>Text Update_23</name>
+    <pv_name>$(P):$(R):RAW_CURRENT_RB</pv_name>
+    <x>145</x><y>289</y><width>130</width><height>22</height>
+    <show_units>false</show_units>
+    <horizontal_alignment>1</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+    <border_alarm_sensitive>true</border_alarm_sensitive>
+  </widget>
+  <widget type="textupdate" version="2.0.0">
+    <name>Text Update_24</name>
+    <pv_name>$(P):$(R):RAW_VOLTAGE_RB</pv_name>
+    <x>290</x><y>289</y><width>110</width><height>22</height>
+    <show_units>false</show_units>
+    <horizontal_alignment>1</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+    <border_alarm_sensitive>true</border_alarm_sensitive>
+  </widget>
+  <widget type="label" version="2.0.0">
+    <name>Label_25</name>
+    <text>Raw setpoint</text>
+    <x>25</x><y>316</y><width>120</width><height>22</height>
+    <font><font family="Liberation Sans" style="REGULAR" size="14.0"></font></font>
+    <horizontal_alignment>0</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+  </widget>
+  <widget type="textupdate" version="2.0.0">
+    <name>Text Update_26</name>
+    <pv_name>$(P):$(R):RAW_CURRENT_SP</pv_name>
+    <x>145</x><y>316</y><width>130</width><height>22</height>
+    <show_units>false</show_units>
+    <horizontal_alignment>1</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+    <border_alarm_sensitive>true</border_alarm_sensitive>
+  </widget>
+  <widget type="group" version="2.0.0">
+    <name>MAU status</name>
+    <x>10</x><y>365</y><width>265</width><height>205</height>
+  </widget>
+  <widget type="led" version="2.0.0">
+    <name>LED_27</name>
+    <pv_name>$(P):$(R):READY</pv_name>
+    <x>25</x><y>395</y><width>20</width><height>20</height>
+    <off_color><color red="255" green="0" blue="0"></color></off_color>
+    <on_color><color red="0" green="200" blue="0"></color></on_color>
+  </widget>
+  <widget type="label" version="2.0.0">
+    <name>Label_28</name>
+    <text>Ready</text>
+    <x>50</x><y>394</y><width>210</width><height>22</height>
+    <font><font family="Liberation Sans" style="REGULAR" size="14.0"></font></font>
+    <horizontal_alignment>0</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+  </widget>
+  <widget type="led" version="2.0.0">
+    <name>LED_29</name>
+    <pv_name>$(P):$(R):OPERATIONAL</pv_name>
+    <x>25</x><y>419</y><width>20</width><height>20</height>
+    <off_color><color red="60" green="100" blue="60"></color></off_color>
+    <on_color><color red="0" green="200" blue="0"></color></on_color>
+  </widget>
+  <widget type="label" version="2.0.0">
+    <name>Label_30</name>
+    <text>Power on</text>
+    <x>50</x><y>418</y><width>210</width><height>22</height>
+    <font><font family="Liberation Sans" style="REGULAR" size="14.0"></font></font>
+    <horizontal_alignment>0</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+  </widget>
+  <widget type="led" version="2.0.0">
+    <name>LED_31</name>
+    <pv_name>$(P):$(R):BALLAST_OT</pv_name>
+    <x>25</x><y>443</y><width>20</width><height>20</height>
+    <off_color><color red="60" green="100" blue="60"></color></off_color>
+    <on_color><color red="255" green="0" blue="0"></color></on_color>
+  </widget>
+  <widget type="label" version="2.0.0">
+    <name>Label_32</name>
+    <text>Ballast over-temp</text>
+    <x>50</x><y>442</y><width>210</width><height>22</height>
+    <font><font family="Liberation Sans" style="REGULAR" size="14.0"></font></font>
+    <horizontal_alignment>0</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+  </widget>
+  <widget type="led" version="2.0.0">
+    <name>LED_33</name>
+    <pv_name>$(P):$(R):FUSE_FAULT</pv_name>
+    <x>25</x><y>467</y><width>20</width><height>20</height>
+    <off_color><color red="60" green="100" blue="60"></color></off_color>
+    <on_color><color red="255" green="0" blue="0"></color></on_color>
+  </widget>
+  <widget type="label" version="2.0.0">
+    <name>Label_34</name>
+    <text>Fuses</text>
+    <x>50</x><y>466</y><width>210</width><height>22</height>
+    <font><font family="Liberation Sans" style="REGULAR" size="14.0"></font></font>
+    <horizontal_alignment>0</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+  </widget>
+  <widget type="led" version="2.0.0">
+    <name>LED_35</name>
+    <pv_name>$(P):$(R):DC_OVERVOLTAGE</pv_name>
+    <x>25</x><y>491</y><width>20</width><height>20</height>
+    <off_color><color red="60" green="100" blue="60"></color></off_color>
+    <on_color><color red="255" green="0" blue="0"></color></on_color>
+  </widget>
+  <widget type="label" version="2.0.0">
+    <name>Label_36</name>
+    <text>DC over-voltage</text>
+    <x>50</x><y>490</y><width>210</width><height>22</height>
+    <font><font family="Liberation Sans" style="REGULAR" size="14.0"></font></font>
+    <horizontal_alignment>0</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+  </widget>
+  <widget type="led" version="2.0.0">
+    <name>LED_37</name>
+    <pv_name>$(P):$(R):DC_OVERCURRENT</pv_name>
+    <x>25</x><y>515</y><width>20</width><height>20</height>
+    <off_color><color red="60" green="100" blue="60"></color></off_color>
+    <on_color><color red="255" green="0" blue="0"></color></on_color>
+  </widget>
+  <widget type="label" version="2.0.0">
+    <name>Label_38</name>
+    <text>DC over-current</text>
+    <x>50</x><y>514</y><width>210</width><height>22</height>
+    <font><font family="Liberation Sans" style="REGULAR" size="14.0"></font></font>
+    <horizontal_alignment>0</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+  </widget>
+  <widget type="led" version="2.0.0">
+    <name>LED_39</name>
+    <pv_name>$(P):$(R):COMM_FAIL</pv_name>
+    <x>25</x><y>539</y><width>20</width><height>20</height>
+    <off_color><color red="60" green="100" blue="60"></color></off_color>
+    <on_color><color red="255" green="0" blue="0"></color></on_color>
+  </widget>
+  <widget type="label" version="2.0.0">
+    <name>Label_40</name>
+    <text>CITBus failure</text>
+    <x>50</x><y>538</y><width>210</width><height>22</height>
+    <font><font family="Liberation Sans" style="REGULAR" size="14.0"></font></font>
+    <horizontal_alignment>0</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+  </widget>
+  <widget type="group" version="2.0.0">
+    <name>Watchdogs</name>
+    <x>285</x><y>365</y><width>265</width><height>205</height>
+  </widget>
+  <widget type="label" version="2.0.0">
+    <name>Label_41</name>
+    <text>Set tolerance</text>
+    <x>300</x><y>395</y><width>120</width><height>22</height>
+    <font><font family="Liberation Sans" style="REGULAR" size="14.0"></font></font>
+    <horizontal_alignment>0</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+  </widget>
+  <widget type="textentry" version="3.0.0">
+    <name>Text Entry_42</name>
+    <pv_name>$(P):$(R):SET_TOLERANCE</pv_name>
+    <x>420</x><y>395</y><width>115</width><height>22</height>
+    <show_units>true</show_units>
+    <horizontal_alignment>1</horizontal_alignment>
+  </widget>
+  <widget type="label" version="2.0.0">
+    <name>Label_43</name>
+    <text>Zero tolerance</text>
+    <x>300</x><y>422</y><width>120</width><height>22</height>
+    <font><font family="Liberation Sans" style="REGULAR" size="14.0"></font></font>
+    <horizontal_alignment>0</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+  </widget>
+  <widget type="textentry" version="3.0.0">
+    <name>Text Entry_44</name>
+    <pv_name>$(P):$(R):ZERO_TOLERANCE</pv_name>
+    <x>420</x><y>422</y><width>115</width><height>22</height>
+    <show_units>true</show_units>
+    <horizontal_alignment>1</horizontal_alignment>
+  </widget>
+  <widget type="label" version="2.0.0">
+    <name>Label_45</name>
+    <text>Timeout</text>
+    <x>300</x><y>449</y><width>120</width><height>22</height>
+    <font><font family="Liberation Sans" style="REGULAR" size="14.0"></font></font>
+    <horizontal_alignment>0</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+  </widget>
+  <widget type="textentry" version="3.0.0">
+    <name>Text Entry_46</name>
+    <pv_name>$(P):$(R):SET_TIMEOUT_S</pv_name>
+    <x>420</x><y>449</y><width>115</width><height>22</height>
+    <show_units>true</show_units>
+    <horizontal_alignment>1</horizontal_alignment>
+  </widget>
+  <widget type="label" version="2.0.0">
+    <name>Label_47</name>
+    <text>Setpoint error</text>
+    <x>300</x><y>476</y><width>120</width><height>22</height>
+    <font><font family="Liberation Sans" style="REGULAR" size="14.0"></font></font>
+    <horizontal_alignment>0</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+  </widget>
+  <widget type="textupdate" version="2.0.0">
+    <name>Text Update_48</name>
+    <pv_name>$(P):$(R):SP_ERR</pv_name>
+    <x>420</x><y>476</y><width>115</width><height>22</height>
+    <show_units>true</show_units>
+    <horizontal_alignment>1</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+    <border_alarm_sensitive>true</border_alarm_sensitive>
+  </widget>
+  <widget type="label" version="2.0.0">
+    <name>Label_49</name>
+    <text>SP unreached</text>
+    <x>300</x><y>503</y><width>120</width><height>22</height>
+    <font><font family="Liberation Sans" style="REGULAR" size="14.0"></font></font>
+    <horizontal_alignment>0</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+  </widget>
+  <widget type="textupdate" version="2.0.0">
+    <name>Text Update_50</name>
+    <pv_name>$(P):$(R):SP_WDOG</pv_name>
+    <x>420</x><y>503</y><width>115</width><height>22</height>
+    <show_units>true</show_units>
+    <horizontal_alignment>1</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+    <border_alarm_sensitive>true</border_alarm_sensitive>
+  </widget>
+  <widget type="label" version="2.0.0">
+    <name>Label_51</name>
+    <text>State unreached</text>
+    <x>300</x><y>530</y><width>120</width><height>22</height>
+    <font><font family="Liberation Sans" style="REGULAR" size="14.0"></font></font>
+    <horizontal_alignment>0</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+  </widget>
+  <widget type="textupdate" version="2.0.0">
+    <name>Text Update_52</name>
+    <pv_name>$(P):$(R):ST_WDOG</pv_name>
+    <x>420</x><y>530</y><width>115</width><height>22</height>
+    <show_units>true</show_units>
+    <horizontal_alignment>1</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+    <border_alarm_sensitive>true</border_alarm_sensitive>
+  </widget>
+</display>

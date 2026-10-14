@@ -1,0 +1,116 @@
+# hzacc_unimag_state.template - UNIMAG state readback and state watchdog
+#
+# Included by hzacc_cubicle.db and hzacc_channel.template.
+#
+# STATE_RB (aligned across the UNIMAG power-supply IOCs):
+#   0 OFF | 1 ON | 2 STANDBY | 3 FAULT (MAJOR) | 4 EXT_INTLK (MAJOR)
+#   5 CONN_FAULT (MAJOR, communication errors)
+#   6 SP_NOT_REACHED (MINOR, current setpoint not reached)
+#   7 ST_NOT_REACHED (MAJOR, commanded state not reached)
+#   8.. additional, device specific states
+#
+# The device logic decodes the plain state (0-5) into STATE_BASE. The
+# watchdogs add 6 and 7 on top of it, and STATE_FINAL selects what STATE_RB
+# shows: faults win, then ST_NOT_REACHED, then SP_NOT_REACHED.
+#
+# The including file must provide the records STATE_SP (mbbo) and
+# SP_NOT_REACHED (see hzacc_unimag_setpoint.template).
+#
+# Macros:
+#   P, R           PV prefix
+#   SET_TIMEOUT_S  (s) how long the setpoint / state may stay unreached
+#                      without progress before it is reported (default 30)
+
+record(ao, "$(P):$(R):SET_TIMEOUT_S") {
+    field(DESC, "Setpoint/state timeout")
+    field(EGU,  "s")
+    field(PREC, "1")
+    field(VAL,  "$(SET_TIMEOUT_S=30)")
+    field(PINI, "YES")
+    field(DRVL, "1")
+    field(DRVH, "3600")
+}
+
+# Plain decoded state (0-5), written by the device logic
+record(ao, "$(P):$(R):STATE_BASE") {
+    field(DESC, "Decoded state without 6/7")
+    field(FLNK, "$(P):$(R):STATE_FINAL")
+}
+
+# Final state: faults win, then ST_NOT_REACHED, then SP_NOT_REACHED
+record(calcout, "$(P):$(R):STATE_FINAL") {
+    field(DESC, "Final state incl. NOT_REACHED")
+    field(INPA, "$(P):$(R):STATE_BASE NPP NMS")
+    field(INPB, "$(P):$(R):ST_NOT_REACHED NPP NMS")
+    field(INPC, "$(P):$(R):SP_NOT_REACHED NPP NMS")
+    field(CALC, "(A>=3&&A<=5)?A:(B?7:(C?6:A))")
+    field(OUT,  "$(P):$(R):STATE_RB PP")
+    field(OOPT, "Every Time")
+}
+
+record(mbbi, "$(P):$(R):STATE_RB") {
+    field(DESC, "State readback")
+    field(SCAN, "Passive")
+    field(ZRVL, "0")
+    field(ZRST, "OFF")
+    field(ONVL, "1")
+    field(ONST, "ON")
+    field(TWVL, "2")
+    field(TWST, "STANDBY")
+    field(THVL, "3")
+    field(THST, "FAULT")
+    field(THSV, "MAJOR")
+    field(FRVL, "4")
+    field(FRST, "EXT_INTLK")
+    field(FRSV, "MAJOR")
+    field(FVVL, "5")
+    field(FVST, "CONN_FAULT")
+    field(FVSV, "MAJOR")
+    field(SXVL, "6")
+    field(SXST, "SP_NOT_REACHED")
+    field(SXSV, "MINOR")
+    field(SVVL, "7")
+    field(SVST, "ST_NOT_REACHED")
+    field(SVSV, "MAJOR")
+}
+
+# ---------- state watchdog ----------
+# Armed by the first state command after boot, so that a supply left running
+# does not raise ST_NOT_REACHED just because STATE_SP boots as OFF.
+record(calc, "$(P):$(R):ST_ARMED") {
+    field(DESC, "State command seen since boot")
+    field(INPA, "$(P):$(R):STATE_SP NPP NMS")
+    field(INPB, "$(P):$(R):ST_LAST NPP NMS")
+    field(INPC, "$(P):$(R):ST_ARMED NPP NMS")
+    field(CALC, "C||A!=B")
+}
+
+# Seconds the commanded state has not been reached. Faults do not count
+# (they are shown as such); OFF and STANDBY are both accepted for either.
+record(calc, "$(P):$(R):ST_WDOG") {
+    field(DESC, "State unreached seconds")
+    field(SCAN, "1 second")
+    field(INPA, "$(P):$(R):STATE_SP NPP NMS")
+    field(INPB, "$(P):$(R):ST_LAST NPP NMS")
+    field(INPC, "$(P):$(R):STATE_BASE NPP NMS")
+    field(INPD, "$(P):$(R):ST_WDOG NPP NMS")
+    field(INPE, "$(P):$(R):ST_ARMED PP NMS")
+    field(CALC, "!E||C>=3&&C<=5||A!=B||(A=1?C=1:(A=0||A=2?C=0||C=2:1))?0:D+1")
+    field(FLNK, "$(P):$(R):ST_NOT_REACHED")
+}
+
+record(calc, "$(P):$(R):ST_NOT_REACHED") {
+    field(DESC, "State not reached in time")
+    field(INPA, "$(P):$(R):ST_WDOG NPP NMS")
+    field(INPB, "$(P):$(R):SET_TIMEOUT_S NPP NMS")
+    field(CALC, "A>=B")
+    field(FLNK, "$(P):$(R):ST_LAST")
+}
+
+record(calc, "$(P):$(R):ST_LAST") {
+    field(DESC, "Previous state command")
+    field(INPA, "$(P):$(R):STATE_SP NPP NMS")
+    field(CALC, "A")
+    field(PINI, "YES")
+    field(FLNK, "$(P):$(R):STATE_FINAL")
+}

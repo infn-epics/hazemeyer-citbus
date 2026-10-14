@@ -1,0 +1,84 @@
+# hzacc_unimag_setpoint.template - UNIMAG current setpoint watchdog
+#
+# Included by hzacc_channel.template, next to hzacc_unimag_state.template.
+# Requires the records CURRENT_SP, CURRENT_RB and STATE_BASE.
+#
+# Macros:
+#   P, R            PV prefix
+#   SET_TOLERANCE   (A) readback within this of CURRENT_SP counts as reached
+#                       (default 0.1, 0 disables the setpoint check)
+#   ZERO_TOLERANCE  (A) a zero setpoint counts as reached within this
+#                       (default 0.05)
+# The timeout (SET_TIMEOUT_S) restarts on progress (readback getting closer
+# to the setpoint) and on a new setpoint.
+
+record(ao, "$(P):$(R):SET_TOLERANCE") {
+    field(DESC, "Current setpoint tolerance")
+    field(EGU,  "A")
+    field(PREC, "3")
+    field(VAL,  "$(SET_TOLERANCE=0.1)")
+    field(PINI, "YES")
+    field(DRVL, "0")
+    field(DRVH, "1000")
+}
+
+record(ao, "$(P):$(R):ZERO_TOLERANCE") {
+    field(DESC, "Zero current tolerance")
+    field(EGU,  "A")
+    field(PREC, "3")
+    field(VAL,  "$(ZERO_TOLERANCE=0.05)")
+    field(PINI, "YES")
+    field(DRVL, "0")
+    field(DRVH, "1000")
+}
+
+# Distance of the readback from the setpoint (from zero for a zero setpoint)
+record(calc, "$(P):$(R):SP_ERR") {
+    field(DESC, "Setpoint error")
+    field(INPA, "$(P):$(R):CURRENT_RB NPP NMS")
+    field(INPB, "$(P):$(R):CURRENT_SP NPP NMS")
+    field(INPC, "$(P):$(R):ZERO_TOLERANCE NPP NMS")
+    field(CALC, "ABS(B)<=C?ABS(A):ABS(A-B)")
+    field(EGU,  "A")
+    field(PREC, "3")
+}
+
+# Seconds the setpoint has been unreached without progress. Only counts
+# while the channel is ON.
+record(calc, "$(P):$(R):SP_WDOG") {
+    field(DESC, "Setpoint unreached seconds")
+    field(SCAN, "1 second")
+    field(INPA, "$(P):$(R):SP_ERR PP NMS")
+    field(INPB, "$(P):$(R):SP_WDOG NPP NMS")
+    field(INPC, "$(P):$(R):ERR_LAST NPP NMS")
+    field(INPD, "$(P):$(R):SET_TOLERANCE NPP NMS")
+    field(INPE, "$(P):$(R):ZERO_TOLERANCE NPP NMS")
+    field(INPF, "$(P):$(R):CURRENT_SP NPP NMS")
+    field(INPG, "$(P):$(R):SP_LAST NPP NMS")
+    field(INPH, "$(P):$(R):STATE_BASE NPP NMS")
+    field(CALC, "D<=0||H!=1&&H<8?0:(A<=(ABS(F)<=E?E:D)?0:(F!=G||A<C-D/20?0:B+1))")
+    field(FLNK, "$(P):$(R):SP_NOT_REACHED")
+}
+
+record(calc, "$(P):$(R):SP_NOT_REACHED") {
+    field(DESC, "Setpoint not reached in time")
+    field(INPA, "$(P):$(R):SP_WDOG NPP NMS")
+    field(INPB, "$(P):$(R):SET_TIMEOUT_S NPP NMS")
+    field(CALC, "A>=B")
+    field(FLNK, "$(P):$(R):SP_LAST")
+}
+
+record(calc, "$(P):$(R):SP_LAST") {
+    field(DESC, "Previous setpoint")
+    field(INPA, "$(P):$(R):CURRENT_SP NPP NMS")
+    field(CALC, "A")
+    field(PINI, "YES")
+    field(FLNK, "$(P):$(R):ERR_LAST")
+}
+
+record(calc, "$(P):$(R):ERR_LAST") {
+    field(DESC, "Previous setpoint error")
+    field(INPA, "$(P):$(R):SP_ERR NPP NMS")
+    field(CALC, "A")
+    field(FLNK, "$(P):$(R):STATE_FINAL")
+}

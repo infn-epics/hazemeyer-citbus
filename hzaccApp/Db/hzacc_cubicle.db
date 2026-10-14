@@ -1,0 +1,633 @@
+# hzacc_cubicle.db - Hazemeyer CHV TL "accumulatore" cubicle (MMU)
+#
+# The cubicle holds 8 channels (MAU0..MAU7, 10 A, 15/20 V), all reached
+# through the Main Monitoring Unit (MMU) Modbus slave. This database covers
+# the cubicle itself: general state machine, general faults, mains
+# measurements and the MAU ready / power status words used by the channels
+# (hzacc_channel.template).
+#
+# Modbus map (MMU database, see docs/, all word addresses):
+#   $0000        write  general commands  B0 Standby, B1 Power On, B2 Power Off,
+#                                         B3 Reset, B4 Active energy reset,
+#                                         B5 Reactive energy reset
+#   $0080-$009D  read   mains measurements
+#   $00C0        read   general faults   (copy of $0020)
+#   $00C1        read   general statuses (copy of $0021)
+#   $00C2        read   MAU ready  (bit n = MAUn, 1 Ready / 0 Faulty)
+#   $00C3        read   MAU power  (bit n = MAUn, 1 On / 0 Off)
+#
+# Macros:
+#   P, R        PV prefix ($(P):$(R):...)
+#   PORT_MEAS   modbus port reading the word area $0080-$00CB (asyn addr 0 = $0080)
+#   PORT_CMD    modbus port writing the command words $0000-$001F (asyn addr 0 = $0000)
+#   TIMEOUT     asyn timeout (ms)
+#   PULSE       command pulse width (s, default 0.5)
+#   ON_DLY      delay between Standby and Power On when switching ON from
+#               the energized state (s, default 3)
+#   U_SLO, I_SLO, P_SLO, Q_SLO, S_SLO, PF_SLO, E_SLO, IE_SLO, F_SLO
+#               raw -> engineering scaling of the mains measurements (default 1)
+
+record(stringout, "$(P):$(R):SWVER") {
+    field(DESC, "Software IOC Version")
+    field(VAL,  "$(SWVER=1.0.0)")
+    field(PINI, "YES")
+}
+
+########################################################################################
+### General faults ($00C0)
+########################################################################################
+
+record(mbbiDirect, "$(P):$(R):GEN_FAULTS") {
+    field(DESC, "General faults word")
+    field(DTYP, "asynUInt32Digital")
+    field(INP,  "@asynMask($(PORT_MEAS) 64 0xFFFF $(TIMEOUT))MODBUS_DATA")
+    field(NOBT, "16")
+    field(SCAN, "I/O Intr")
+}
+
+record(bi, "$(P):$(R):TRANSFO_OT") {
+    field(DESC, "Transformer over-temperature")
+    field(INP,  "$(P):$(R):GEN_FAULTS.B0 CP MS")
+    field(ZNAM, "OK")
+    field(ONAM, "FAULT")
+    field(OSV,  "MAJOR")
+}
+
+record(bi, "$(P):$(R):RECTIFIER_OT") {
+    field(DESC, "Rectifier over-temperature")
+    field(INP,  "$(P):$(R):GEN_FAULTS.B1 CP MS")
+    field(ZNAM, "OK")
+    field(ONAM, "FAULT")
+    field(OSV,  "MAJOR")
+}
+
+record(bi, "$(P):$(R):CHOKE_OT") {
+    field(DESC, "Filter choke over-temperature")
+    field(INP,  "$(P):$(R):GEN_FAULTS.B2 CP MS")
+    field(ZNAM, "OK")
+    field(ONAM, "FAULT")
+    field(OSV,  "MAJOR")
+}
+
+record(bi, "$(P):$(R):FUSE_FAULT") {
+    field(DESC, "Fuses fault")
+    field(INP,  "$(P):$(R):GEN_FAULTS.B3 CP MS")
+    field(ZNAM, "OK")
+    field(ONAM, "FAULT")
+    field(OSV,  "MAJOR")
+}
+
+record(bi, "$(P):$(R):EARTH_FAULT") {
+    field(DESC, "Earth fault")
+    field(INP,  "$(P):$(R):GEN_FAULTS.B4 CP MS")
+    field(ZNAM, "OK")
+    field(ONAM, "FAULT")
+    field(OSV,  "MAJOR")
+}
+
+record(bi, "$(P):$(R):USER_FAULT1") {
+    field(DESC, "User fault #1")
+    field(INP,  "$(P):$(R):GEN_FAULTS.B5 CP MS")
+    field(ZNAM, "OK")
+    field(ONAM, "FAULT")
+    field(OSV,  "MAJOR")
+}
+
+record(bi, "$(P):$(R):USER_FAULT2") {
+    field(DESC, "User fault #2")
+    field(INP,  "$(P):$(R):GEN_FAULTS.B6 CP MS")
+    field(ZNAM, "OK")
+    field(ONAM, "FAULT")
+    field(OSV,  "MAJOR")
+}
+
+record(bi, "$(P):$(R):USER_FAULT3") {
+    field(DESC, "User fault #3")
+    field(INP,  "$(P):$(R):GEN_FAULTS.B7 CP MS")
+    field(ZNAM, "OK")
+    field(ONAM, "FAULT")
+    field(OSV,  "MAJOR")
+}
+
+record(bi, "$(P):$(R):USER_FAULT4") {
+    field(DESC, "User fault #4")
+    field(INP,  "$(P):$(R):GEN_FAULTS.B8 CP MS")
+    field(ZNAM, "OK")
+    field(ONAM, "FAULT")
+    field(OSV,  "MAJOR")
+}
+
+record(bi, "$(P):$(R):USER_FAULT5") {
+    field(DESC, "User fault #5")
+    field(INP,  "$(P):$(R):GEN_FAULTS.B9 CP MS")
+    field(ZNAM, "OK")
+    field(ONAM, "FAULT")
+    field(OSV,  "MAJOR")
+}
+
+record(bi, "$(P):$(R):DOOR_OPEN") {
+    field(DESC, "Cabinet door open")
+    field(INP,  "$(P):$(R):GEN_FAULTS.BA CP MS")
+    field(ZNAM, "CLOSED")
+    field(ONAM, "OPEN")
+    field(OSV,  "MAJOR")
+}
+
+record(bi, "$(P):$(R):CABINET_OT") {
+    field(DESC, "Cabinet over-temperature")
+    field(INP,  "$(P):$(R):GEN_FAULTS.BB CP MS")
+    field(ZNAM, "OK")
+    field(ONAM, "FAULT")
+    field(OSV,  "MAJOR")
+}
+
+########################################################################################
+### General statuses ($00C1)
+########################################################################################
+
+record(mbbiDirect, "$(P):$(R):GEN_STATUS") {
+    field(DESC, "General statuses word")
+    field(DTYP, "asynUInt32Digital")
+    field(INP,  "@asynMask($(PORT_MEAS) 65 0xFFFF $(TIMEOUT))MODBUS_DATA")
+    field(NOBT, "16")
+    field(SCAN, "I/O Intr")
+}
+
+record(bi, "$(P):$(R):READY") {
+    field(DESC, "Ready status")
+    field(INP,  "$(P):$(R):GEN_STATUS.B0 CP MS")
+    field(ZNAM, "FAULTY")
+    field(ONAM, "READY")
+    field(ZSV,  "MAJOR")
+}
+
+record(bi, "$(P):$(R):STANDBY_STS") {
+    field(DESC, "Standby status")
+    field(INP,  "$(P):$(R):GEN_STATUS.B1 CP MS")
+    field(ZNAM, "OFF")
+    field(ONAM, "STANDBY")
+}
+
+record(bi, "$(P):$(R):POWER_STS") {
+    field(DESC, "Power status")
+    field(INP,  "$(P):$(R):GEN_STATUS.B2 CP MS")
+    field(ZNAM, "OFF")
+    field(ONAM, "ON")
+}
+
+# Polarity not stated in the manual: check on the cubicle
+record(bi, "$(P):$(R):LOC_REM") {
+    field(DESC, "Local / Remote status")
+    field(INP,  "$(P):$(R):GEN_STATUS.B3 CP MS")
+    field(ZNAM, "LOCAL")
+    field(ONAM, "REMOTE")
+}
+
+record(bi, "$(P):$(R):RESET_PB") {
+    field(DESC, "Reset push button status")
+    field(INP,  "$(P):$(R):GEN_STATUS.B4 CP MS")
+    field(ZNAM, "RELEASED")
+    field(ONAM, "PRESSED")
+}
+
+# Any general fault bit or cubicle not ready
+record(calc, "$(P):$(R):ALL_FAULT") {
+    field(DESC, "Cubicle fault summary")
+    field(INPA, "$(P):$(R):READY CP MS")
+    field(INPB, "$(P):$(R):GEN_FAULTS CP MS")
+    field(CALC, "(!A||(B&4095))?1:0")
+    field(HIGH, "1")
+    field(HSV,  "MAJOR")
+}
+
+########################################################################################
+### MAU ready / power words ($00C2, $00C3) - used by the channels
+########################################################################################
+
+record(mbbiDirect, "$(P):$(R):MAU_READY") {
+    field(DESC, "MAU ready bits (1 Ready)")
+    field(DTYP, "asynUInt32Digital")
+    field(INP,  "@asynMask($(PORT_MEAS) 66 0x00FF $(TIMEOUT))MODBUS_DATA")
+    field(NOBT, "8")
+    field(SCAN, "I/O Intr")
+}
+
+record(mbbiDirect, "$(P):$(R):MAU_POWER") {
+    field(DESC, "MAU power bits (1 On)")
+    field(DTYP, "asynUInt32Digital")
+    field(INP,  "@asynMask($(PORT_MEAS) 67 0x00FF $(TIMEOUT))MODBUS_DATA")
+    field(NOBT, "8")
+    field(SCAN, "I/O Intr")
+}
+
+########################################################################################
+### Mains measurements ($0080-$009D)
+########################################################################################
+
+record(ai, "$(P):$(R):MAINS_U1") {
+    field(DESC, "Mains phase 1 voltage")
+    field(DTYP, "asynFloat64")
+    field(INP,  "@asyn($(PORT_MEAS),0,$(TIMEOUT))UINT16")
+    field(ASLO, "$(U_SLO=1)")
+    field(EGU,  "V")
+    field(PREC, "1")
+    field(SCAN, "I/O Intr")
+}
+
+record(ai, "$(P):$(R):MAINS_U2") {
+    field(DESC, "Mains phase 2 voltage")
+    field(DTYP, "asynFloat64")
+    field(INP,  "@asyn($(PORT_MEAS),1,$(TIMEOUT))UINT16")
+    field(ASLO, "$(U_SLO=1)")
+    field(EGU,  "V")
+    field(PREC, "1")
+    field(SCAN, "I/O Intr")
+}
+
+record(ai, "$(P):$(R):MAINS_U3") {
+    field(DESC, "Mains phase 3 voltage")
+    field(DTYP, "asynFloat64")
+    field(INP,  "@asyn($(PORT_MEAS),2,$(TIMEOUT))UINT16")
+    field(ASLO, "$(U_SLO=1)")
+    field(EGU,  "V")
+    field(PREC, "1")
+    field(SCAN, "I/O Intr")
+}
+
+record(ai, "$(P):$(R):MAINS_U_AVG") {
+    field(DESC, "Mains average voltage")
+    field(DTYP, "asynFloat64")
+    field(INP,  "@asyn($(PORT_MEAS),3,$(TIMEOUT))UINT16")
+    field(ASLO, "$(U_SLO=1)")
+    field(EGU,  "V")
+    field(PREC, "1")
+    field(SCAN, "I/O Intr")
+}
+
+record(ai, "$(P):$(R):MAINS_I1") {
+    field(DESC, "Mains phase 1 current")
+    field(DTYP, "asynFloat64")
+    field(INP,  "@asyn($(PORT_MEAS),4,$(TIMEOUT))UINT16")
+    field(ASLO, "$(I_SLO=1)")
+    field(EGU,  "A")
+    field(PREC, "2")
+    field(SCAN, "I/O Intr")
+}
+
+record(ai, "$(P):$(R):MAINS_I2") {
+    field(DESC, "Mains phase 2 current")
+    field(DTYP, "asynFloat64")
+    field(INP,  "@asyn($(PORT_MEAS),5,$(TIMEOUT))UINT16")
+    field(ASLO, "$(I_SLO=1)")
+    field(EGU,  "A")
+    field(PREC, "2")
+    field(SCAN, "I/O Intr")
+}
+
+record(ai, "$(P):$(R):MAINS_I3") {
+    field(DESC, "Mains phase 3 current")
+    field(DTYP, "asynFloat64")
+    field(INP,  "@asyn($(PORT_MEAS),6,$(TIMEOUT))UINT16")
+    field(ASLO, "$(I_SLO=1)")
+    field(EGU,  "A")
+    field(PREC, "2")
+    field(SCAN, "I/O Intr")
+}
+
+record(ai, "$(P):$(R):MAINS_I_AVG") {
+    field(DESC, "Mains average current")
+    field(DTYP, "asynFloat64")
+    field(INP,  "@asyn($(PORT_MEAS),7,$(TIMEOUT))UINT16")
+    field(ASLO, "$(I_SLO=1)")
+    field(EGU,  "A")
+    field(PREC, "2")
+    field(SCAN, "I/O Intr")
+}
+
+record(ai, "$(P):$(R):MAINS_P1") {
+    field(DESC, "Mains phase 1 active power")
+    field(DTYP, "asynFloat64")
+    field(INP,  "@asyn($(PORT_MEAS),8,$(TIMEOUT))INT16")
+    field(ASLO, "$(P_SLO=1)")
+    field(EGU,  "W")
+    field(PREC, "1")
+    field(SCAN, "I/O Intr")
+}
+
+record(ai, "$(P):$(R):MAINS_P2") {
+    field(DESC, "Mains phase 2 active power")
+    field(DTYP, "asynFloat64")
+    field(INP,  "@asyn($(PORT_MEAS),9,$(TIMEOUT))INT16")
+    field(ASLO, "$(P_SLO=1)")
+    field(EGU,  "W")
+    field(PREC, "1")
+    field(SCAN, "I/O Intr")
+}
+
+record(ai, "$(P):$(R):MAINS_P3") {
+    field(DESC, "Mains phase 3 active power")
+    field(DTYP, "asynFloat64")
+    field(INP,  "@asyn($(PORT_MEAS),10,$(TIMEOUT))INT16")
+    field(ASLO, "$(P_SLO=1)")
+    field(EGU,  "W")
+    field(PREC, "1")
+    field(SCAN, "I/O Intr")
+}
+
+record(ai, "$(P):$(R):MAINS_P_TOT") {
+    field(DESC, "Mains total active power")
+    field(DTYP, "asynFloat64")
+    field(INP,  "@asyn($(PORT_MEAS),11,$(TIMEOUT))INT16")
+    field(ASLO, "$(P_SLO=1)")
+    field(EGU,  "W")
+    field(PREC, "1")
+    field(SCAN, "I/O Intr")
+}
+
+record(ai, "$(P):$(R):MAINS_Q1") {
+    field(DESC, "Mains phase 1 reactive power")
+    field(DTYP, "asynFloat64")
+    field(INP,  "@asyn($(PORT_MEAS),12,$(TIMEOUT))INT16")
+    field(ASLO, "$(Q_SLO=1)")
+    field(EGU,  "var")
+    field(PREC, "1")
+    field(SCAN, "I/O Intr")
+}
+
+record(ai, "$(P):$(R):MAINS_Q2") {
+    field(DESC, "Mains phase 2 reactive power")
+    field(DTYP, "asynFloat64")
+    field(INP,  "@asyn($(PORT_MEAS),13,$(TIMEOUT))INT16")
+    field(ASLO, "$(Q_SLO=1)")
+    field(EGU,  "var")
+    field(PREC, "1")
+    field(SCAN, "I/O Intr")
+}
+
+record(ai, "$(P):$(R):MAINS_Q3") {
+    field(DESC, "Mains phase 3 reactive power")
+    field(DTYP, "asynFloat64")
+    field(INP,  "@asyn($(PORT_MEAS),14,$(TIMEOUT))INT16")
+    field(ASLO, "$(Q_SLO=1)")
+    field(EGU,  "var")
+    field(PREC, "1")
+    field(SCAN, "I/O Intr")
+}
+
+record(ai, "$(P):$(R):MAINS_Q_TOT") {
+    field(DESC, "Mains total reactive power")
+    field(DTYP, "asynFloat64")
+    field(INP,  "@asyn($(PORT_MEAS),15,$(TIMEOUT))INT16")
+    field(ASLO, "$(Q_SLO=1)")
+    field(EGU,  "var")
+    field(PREC, "1")
+    field(SCAN, "I/O Intr")
+}
+
+record(ai, "$(P):$(R):MAINS_S1") {
+    field(DESC, "Mains phase 1 apparent power")
+    field(DTYP, "asynFloat64")
+    field(INP,  "@asyn($(PORT_MEAS),16,$(TIMEOUT))UINT16")
+    field(ASLO, "$(S_SLO=1)")
+    field(EGU,  "VA")
+    field(PREC, "1")
+    field(SCAN, "I/O Intr")
+}
+
+record(ai, "$(P):$(R):MAINS_S2") {
+    field(DESC, "Mains phase 2 apparent power")
+    field(DTYP, "asynFloat64")
+    field(INP,  "@asyn($(PORT_MEAS),17,$(TIMEOUT))UINT16")
+    field(ASLO, "$(S_SLO=1)")
+    field(EGU,  "VA")
+    field(PREC, "1")
+    field(SCAN, "I/O Intr")
+}
+
+record(ai, "$(P):$(R):MAINS_S3") {
+    field(DESC, "Mains phase 3 apparent power")
+    field(DTYP, "asynFloat64")
+    field(INP,  "@asyn($(PORT_MEAS),18,$(TIMEOUT))UINT16")
+    field(ASLO, "$(S_SLO=1)")
+    field(EGU,  "VA")
+    field(PREC, "1")
+    field(SCAN, "I/O Intr")
+}
+
+record(ai, "$(P):$(R):MAINS_S_TOT") {
+    field(DESC, "Mains total apparent power")
+    field(DTYP, "asynFloat64")
+    field(INP,  "@asyn($(PORT_MEAS),19,$(TIMEOUT))UINT16")
+    field(ASLO, "$(S_SLO=1)")
+    field(EGU,  "VA")
+    field(PREC, "1")
+    field(SCAN, "I/O Intr")
+}
+
+record(ai, "$(P):$(R):MAINS_PF1") {
+    field(DESC, "Mains phase 1 power factor")
+    field(DTYP, "asynFloat64")
+    field(INP,  "@asyn($(PORT_MEAS),20,$(TIMEOUT))INT16")
+    field(ASLO, "$(PF_SLO=1)")
+    field(PREC, "3")
+    field(SCAN, "I/O Intr")
+}
+
+record(ai, "$(P):$(R):MAINS_PF2") {
+    field(DESC, "Mains phase 2 power factor")
+    field(DTYP, "asynFloat64")
+    field(INP,  "@asyn($(PORT_MEAS),21,$(TIMEOUT))INT16")
+    field(ASLO, "$(PF_SLO=1)")
+    field(PREC, "3")
+    field(SCAN, "I/O Intr")
+}
+
+record(ai, "$(P):$(R):MAINS_PF3") {
+    field(DESC, "Mains phase 3 power factor")
+    field(DTYP, "asynFloat64")
+    field(INP,  "@asyn($(PORT_MEAS),22,$(TIMEOUT))INT16")
+    field(ASLO, "$(PF_SLO=1)")
+    field(PREC, "3")
+    field(SCAN, "I/O Intr")
+}
+
+record(ai, "$(P):$(R):MAINS_PF_AVG") {
+    field(DESC, "Mains average power factor")
+    field(DTYP, "asynFloat64")
+    field(INP,  "@asyn($(PORT_MEAS),23,$(TIMEOUT))INT16")
+    field(ASLO, "$(PF_SLO=1)")
+    field(PREC, "3")
+    field(SCAN, "I/O Intr")
+}
+
+# 32 bit counters, MSW first ($0098/$0099 and $009A/$009B)
+record(ai, "$(P):$(R):MAINS_ACT_ENERGY") {
+    field(DESC, "Mains active energy")
+    field(DTYP, "asynFloat64")
+    field(INP,  "@asyn($(PORT_MEAS),24,$(TIMEOUT))UINT32_BE")
+    field(ASLO, "$(E_SLO=1)")
+    field(EGU,  "Wh")
+    field(PREC, "0")
+    field(SCAN, "I/O Intr")
+}
+
+record(ai, "$(P):$(R):MAINS_REACT_ENERGY") {
+    field(DESC, "Mains reactive energy")
+    field(DTYP, "asynFloat64")
+    field(INP,  "@asyn($(PORT_MEAS),26,$(TIMEOUT))UINT32_BE")
+    field(ASLO, "$(E_SLO=1)")
+    field(EGU,  "varh")
+    field(PREC, "0")
+    field(SCAN, "I/O Intr")
+}
+
+record(ai, "$(P):$(R):EARTH_CURRENT_RB") {
+    field(DESC, "Earth fault current")
+    field(DTYP, "asynFloat64")
+    field(INP,  "@asyn($(PORT_MEAS),28,$(TIMEOUT))UINT16")
+    field(ASLO, "$(IE_SLO=1)")
+    field(EGU,  "mA")
+    field(PREC, "1")
+    field(SCAN, "I/O Intr")
+}
+
+record(ai, "$(P):$(R):MAINS_FREQ") {
+    field(DESC, "Mains frequency")
+    field(DTYP, "asynFloat64")
+    field(INP,  "@asyn($(PORT_MEAS),29,$(TIMEOUT))UINT16")
+    field(ASLO, "$(F_SLO=1)")
+    field(EGU,  "Hz")
+    field(PREC, "2")
+    field(SCAN, "I/O Intr")
+}
+
+########################################################################################
+### Commands ($0000) - pulsed: the code is written, then cleared after PULSE seconds
+########################################################################################
+
+record(ao, "$(P):$(R):CMD_WORD") {
+    field(DESC, "General command word")
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT_CMD),0,$(TIMEOUT))MODBUS_DATA")
+}
+
+record(ao, "$(P):$(R):CMD_VAL") {
+    field(DESC, "Command code to pulse")
+    field(FLNK, "$(P):$(R):CMD_PULSE")
+}
+
+record(seq, "$(P):$(R):CMD_PULSE") {
+    field(DESC, "Pulse the command word")
+    field(SELM, "All")
+    field(DOL1, "$(P):$(R):CMD_VAL NPP")
+    field(LNK1, "$(P):$(R):CMD_WORD PP")
+    field(DLY2, "$(PULSE=0.5)")
+    field(DOL2, "0")
+    field(LNK2, "$(P):$(R):CMD_WORD PP")
+}
+
+record(bo, "$(P):$(R):ACT_ENERGY_RST") {
+    field(DESC, "Reset active energy counter")
+    field(ZNAM, "Normal")
+    field(ONAM, "Reset")
+    field(FLNK, "$(P):$(R):ACT_ENERGY_RST_CMD")
+}
+
+record(calcout, "$(P):$(R):ACT_ENERGY_RST_CMD") {
+    field(INPA, "$(P):$(R):ACT_ENERGY_RST")
+    field(CALC, "A")
+    field(OOPT, "When Non-zero")
+    field(OCAL, "16")
+    field(DOPT, "Use OCAL")
+    field(OUT,  "$(P):$(R):CMD_VAL PP")
+}
+
+record(bo, "$(P):$(R):REACT_ENERGY_RST") {
+    field(DESC, "Reset reactive energy counter")
+    field(ZNAM, "Normal")
+    field(ONAM, "Reset")
+    field(FLNK, "$(P):$(R):REACT_ENERGY_RST_CMD")
+}
+
+record(calcout, "$(P):$(R):REACT_ENERGY_RST_CMD") {
+    field(INPA, "$(P):$(R):REACT_ENERGY_RST")
+    field(CALC, "A")
+    field(OOPT, "When Non-zero")
+    field(OCAL, "32")
+    field(DOPT, "Use OCAL")
+    field(OUT,  "$(P):$(R):CMD_VAL PP")
+}
+
+########################################################################################
+### UNIMAG state
+########################################################################################
+# Cubicle state descriptor (Power, Standby, Ready):
+#   Faulty 000/010 -> FAULT, Energized 001 -> OFF, Standby 011 -> STANDBY,
+#   Power On 111 -> ON. CONN_FAULT when the status word cannot be read.
+
+record(calcout, "$(P):$(R):STATE_RB_CALC") {
+    field(DESC, "State readback")
+    field(INPA, "$(P):$(R):READY CP")
+    field(INPB, "$(P):$(R):STANDBY_STS CP")
+    field(INPC, "$(P):$(R):POWER_STS CP")
+    field(INPD, "$(P):$(R):GEN_STATUS.SEVR CP NMS")
+    field(CALC, "D>=3?5:(!A?3:(C?1:(B?2:0)))")
+    field(OUT,  "$(P):$(R):STATE_BASE PP")
+    field(OOPT, "Every Time")
+}
+
+record(mbbo, "$(P):$(R):STATE_SP") {
+    field(DESC, "State setpoint")
+    field(ZRVL, "0")
+    field(ZRST, "OFF")
+    field(ONVL, "1")
+    field(ONST, "ON")
+    field(TWVL, "2")
+    field(TWST, "STANDBY")
+    field(THVL, "3")
+    field(THST, "RESET")
+    field(FLNK, "$(P):$(R):STATE_DISPATCH")
+}
+
+# OFF -> Power Off (4), ON -> see POWER_ON_SEQ, STANDBY -> Standby (1),
+# RESET -> Remote Reset (8)
+record(seq, "$(P):$(R):STATE_DISPATCH") {
+    field(DESC, "State command dispatcher")
+    field(SELM, "Specified")
+    field(SELL, "$(P):$(R):STATE_SP NPP")
+    field(DOL0, "4")
+    field(LNK0, "$(P):$(R):CMD_VAL PP")
+    field(DOL1, "1")
+    field(LNK1, "$(P):$(R):POWER_ON_SEQ.PROC PP")
+    field(DOL2, "1")
+    field(LNK2, "$(P):$(R):CMD_VAL PP")
+    field(DOL3, "8")
+    field(LNK3, "$(P):$(R):CMD_VAL PP")
+}
+
+# Power On is only accepted from Standby: from the energized state (OFF) go
+# through Standby first, then Power On after ON_DLY seconds.
+record(calc, "$(P):$(R):POWER_ON_FIRST") {
+    field(DESC, "First command for ON")
+    field(INPA, "$(P):$(R):STATE_BASE NPP NMS")
+    field(CALC, "A=0?1:2")
+}
+
+record(seq, "$(P):$(R):POWER_ON_SEQ") {
+    field(DESC, "Standby then Power On")
+    field(SELM, "All")
+    field(DOL1, "$(P):$(R):POWER_ON_FIRST PP")
+    field(LNK1, "$(P):$(R):CMD_VAL PP")
+    field(DLY2, "$(ON_DLY=3)")
+    field(DOL2, "2")
+    field(LNK2, "$(P):$(R):CMD_VAL PP")
+}
+
+# The cubicle has no current setpoint: SP_NOT_REACHED is always 0
+record(calc, "$(P):$(R):SP_NOT_REACHED") {
+    field(DESC, "No setpoint check on cubicle")
+    field(CALC, "0")
+    field(PINI, "YES")
+}
+
+include "hzacc_unimag_state.template"
