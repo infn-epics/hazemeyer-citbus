@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <display version="2.0.0">
   <name>Hazemeyer CITBus $(R)</name>
-  <macros><CUB>CITA1001</CUB></macros>
+  <macros><ID>1</ID></macros>
   <width>560</width>
   <height>580</height>
   <widget type="label" version="2.0.0">
@@ -119,7 +119,7 @@
   </widget>
   <widget type="label" version="2.0.0">
     <name>Label_12</name>
-    <text>Cubicle $(CUB)</text>
+    <text>Cubicle CIT$(ID)</text>
     <x>25</x><y>156</y><width>120</width><height>22</height>
     <font><font family="Liberation Sans" style="REGULAR" size="14.0"></font></font>
     <horizontal_alignment>0</horizontal_alignment>
@@ -127,7 +127,7 @@
   </widget>
   <widget type="textupdate" version="2.0.0">
     <name>Text Update_13</name>
-    <pv_name>$(P):$(CUB):STATE_RB</pv_name>
+    <pv_name>$(P):CIT$(ID):STATE_RB</pv_name>
     <x>145</x><y>156</y><width>160</width><height>22</height>
     <show_units>true</show_units>
     <horizontal_alignment>1</horizontal_alignment>

@@ -5,24 +5,29 @@
 #
 # Channel state descriptor (Power, Ready): OFF 01, ON 11, Faulty 00.
 # Ready and power come from the cubicle words $00C2/$00C3 (bit CH).
+# Channel ON switches the cubicle ON too (see ON_REQ).
 #
 # Macros:
 #   P, R        PV prefix of the channel ($(P):$(R):...)
 #   CUB         R of the cubicle ($(P):$(CUB):..., hzacc_cubicle.db)
 #   CH          MAU number 0-7 (bit in the MAU ready / power words)
-#   PORT_MEAS   modbus port of the word area $0080-$00CB (asyn addr 0 = $0080)
+#   PORT_MEAS2  modbus port of the word area $00A0-$00CB (asyn addr 0 = $00A0)
 #   PORT_STS    modbus port of the status area $0020-$003F (asyn addr 0 = $0020)
 #   PORT_CMD    modbus port of the command words $0000-$001F (asyn addr 0 = $0000)
 #   PORT_ISET   modbus port of the current settings $0060-$0067 (asyn addr 0 = $0060)
-#   IRB         asyn addr of the output current in PORT_MEAS  ($00C4+CH  -> 68+CH)
-#   VRB         asyn addr of the output voltage in PORT_MEAS  ($00A1+4CH -> 33+4CH)
+#   IRB         asyn addr of the output current in PORT_MEAS2 ($00C4+CH  -> 36+CH)
+#   VRB         asyn addr of the output voltage in PORT_MEAS2 ($00A1+4CH -> 1+4CH)
 #   FLT         asyn addr of the MAU fault word in PORT_STS   ($0030+2CH -> 16+2CH)
 #   STS         asyn addr of the MAU status word in PORT_STS  ($0031+2CH -> 17+2CH)
 #   CMD         asyn addr of the MAU command word in PORT_CMD ($0010+2CH -> 16+2CH)
 #   ISET        asyn addr of the current setting in PORT_ISET ($0060+CH  -> CH)
 #   IMAX        full scale current (A, default 10)
 #   VMAX        full scale voltage (V, default 20)
-#   RAWMAX      raw value at full scale (default 4095, 12 bit ADC / DAC)
+#   RAWMAX_SP   raw current setting at IMAX (default 2048). The settings are
+#               signed (bipolar correctors), -RAWMAX_SP..RAWMAX_SP
+#   RAWMAX_RB   raw current / voltage readback at IMAX / VMAX (default 8192),
+#               signed. Both measured against the reference control system:
+#               raw setting 410 -> 2.000 A, raw readback 1644 -> 2.000 A
 #   TIMEOUT     asyn timeout (ms)
 #   PULSE       command pulse width (s, default 0.5)
 #   SET_TOLERANCE, ZERO_TOLERANCE, SET_TIMEOUT_S  UNIMAG watchdog settings
@@ -35,9 +40,9 @@ record(ao, "$(P):$(R):CURRENT_SP") {
     field(DESC, "Channel set current")
     field(EGU,  "A")
     field(PREC, "3")
-    field(DRVL, "0")
+    field(DRVL, "-$(IMAX=10)")
     field(DRVH, "$(IMAX=10)")
-    field(LOPR, "0")
+    field(LOPR, "-$(IMAX=10)")
     field(HOPR, "$(IMAX=10)")
     field(FLNK, "$(P):$(R):CALC_CURRENT_RAW")
 }
@@ -45,7 +50,7 @@ record(ao, "$(P):$(R):CURRENT_SP") {
 record(calcout, "$(P):$(R):CALC_CURRENT_RAW") {
     field(DESC, "Convert current to raw value")
     field(INPA, "$(P):$(R):CURRENT_SP NPP")
-    field(CALC, "FLOOR(A*$(RAWMAX=4095)/$(IMAX=10)+0.5)")
+    field(CALC, "FLOOR(A*$(RAWMAX_SP=2048)/$(IMAX=10)+0.5)")
     field(OUT,  "$(P):$(R):RAW_CURRENT_SP PP")
 }
 
@@ -53,15 +58,15 @@ record(ao, "$(P):$(R):RAW_CURRENT_SP") {
     field(DESC, "Raw current setpoint")
     field(DTYP, "asynInt32")
     field(OUT,  "@asyn($(PORT_ISET),$(ISET),$(TIMEOUT))MODBUS_DATA")
-    field(DRVL, "0")
-    field(DRVH, "$(RAWMAX=4095)")
+    field(DRVL, "-$(RAWMAX_SP=2048)")
+    field(DRVH, "$(RAWMAX_SP=2048)")
 }
 
 # Current setting as held by the MMU (read back by the write port at boot)
 record(calc, "$(P):$(R):SET_CURRENT_RB") {
     field(DESC, "Set current readback")
     field(INPA, "$(P):$(R):RAW_CURRENT_SP CP MS")
-    field(CALC, "A*$(IMAX=10)/$(RAWMAX=4095)")
+    field(CALC, "A*$(IMAX=10)/$(RAWMAX_SP=2048)")
     field(EGU,  "A")
     field(PREC, "3")
 }
@@ -73,7 +78,7 @@ record(calc, "$(P):$(R):SET_CURRENT_RB") {
 record(ai, "$(P):$(R):RAW_CURRENT_RB") {
     field(DESC, "Raw output current")
     field(DTYP, "asynInt32")
-    field(INP,  "@asyn($(PORT_MEAS),$(IRB),$(TIMEOUT))MODBUS_DATA")
+    field(INP,  "@asyn($(PORT_MEAS2),$(IRB),$(TIMEOUT))MODBUS_DATA")
     field(SCAN, "I/O Intr")
     field(FLNK, "$(P):$(R):CURRENT_RB")
 }
@@ -81,17 +86,17 @@ record(ai, "$(P):$(R):RAW_CURRENT_RB") {
 record(calc, "$(P):$(R):CURRENT_RB") {
     field(DESC, "Output current readback")
     field(INPA, "$(P):$(R):RAW_CURRENT_RB NPP MS")
-    field(CALC, "A*$(IMAX=10)/$(RAWMAX=4095)")
+    field(CALC, "A*$(IMAX=10)/$(RAWMAX_RB=8192)")
     field(EGU,  "A")
     field(PREC, "3")
-    field(LOPR, "0")
+    field(LOPR, "-$(IMAX=10)")
     field(HOPR, "$(IMAX=10)")
 }
 
 record(ai, "$(P):$(R):RAW_VOLTAGE_RB") {
     field(DESC, "Raw output voltage")
     field(DTYP, "asynInt32")
-    field(INP,  "@asyn($(PORT_MEAS),$(VRB),$(TIMEOUT))MODBUS_DATA")
+    field(INP,  "@asyn($(PORT_MEAS2),$(VRB),$(TIMEOUT))MODBUS_DATA")
     field(SCAN, "I/O Intr")
     field(FLNK, "$(P):$(R):VOLTAGE_RB")
 }
@@ -99,10 +104,10 @@ record(ai, "$(P):$(R):RAW_VOLTAGE_RB") {
 record(calc, "$(P):$(R):VOLTAGE_RB") {
     field(DESC, "Output voltage readback")
     field(INPA, "$(P):$(R):RAW_VOLTAGE_RB NPP MS")
-    field(CALC, "A*$(VMAX=20)/$(RAWMAX=4095)")
+    field(CALC, "A*$(VMAX=20)/$(RAWMAX_RB=8192)")
     field(EGU,  "V")
     field(PREC, "3")
-    field(LOPR, "0")
+    field(LOPR, "-$(VMAX=20)")
     field(HOPR, "$(VMAX=20)")
 }
 
@@ -199,10 +204,11 @@ record(mbbiDirect, "$(P):$(R):MAU_STATUS") {
     field(SCAN, "I/O Intr")
 }
 
-# Polarity not stated in the manual: check on the cubicle
+# The MAU status word only has the power bit (B1 is reserved): the
+# Local / Remote status is the cubicle one ($0021 B3)
 record(bi, "$(P):$(R):LOC_REM") {
     field(DESC, "Local / Remote status")
-    field(INP,  "$(P):$(R):MAU_STATUS.B1 CP MS")
+    field(INP,  "$(P):$(CUB):LOC_REM CP MS")
     field(ZNAM, "LOCAL")
     field(ONAM, "REMOTE")
 }
@@ -237,7 +243,8 @@ record(seq, "$(P):$(R):CMD_PULSE") {
 ########################################################################################
 # CONN_FAULT when the ready word cannot be read or the MAU reports a CITBus
 # communication failure, EXT_INTLK when the cubicle is faulty, FAULT when the
-# MAU is not ready, then ON / OFF from the power bit.
+# MAU is not ready, then ON / OFF from the power bit. A MAU powered on while
+# the cubicle is not in Power On delivers no current: it reads STANDBY.
 
 record(calcout, "$(P):$(R):STATE_RB_CALC") {
     field(DESC, "State readback")
@@ -246,7 +253,8 @@ record(calcout, "$(P):$(R):STATE_RB_CALC") {
     field(INPC, "$(P):$(CUB):READY CP")
     field(INPD, "$(P):$(R):READY.SEVR CP NMS")
     field(INPE, "$(P):$(R):COMM_FAIL CP NMS")
-    field(CALC, "(D>=3||E)?5:(!C?4:(!A?3:(B?1:0)))")
+    field(INPF, "$(P):$(CUB):POWER_STS CP")
+    field(CALC, "(D>=3||E)?5:(!C?4:(!A?3:(B?(F?1:2):0)))")
     field(OUT,  "$(P):$(R):STATE_BASE PP")
     field(OOPT, "Every Time")
 }
@@ -261,10 +269,22 @@ record(mbbo, "$(P):$(R):STATE_SP") {
     field(TWST, "STANDBY")
     field(THVL, "3")
     field(THST, "RESET")
+    field(FLNK, "$(P):$(R):ON_CANCEL")
+}
+
+# Any command other than ON drops a pending ON
+record(calcout, "$(P):$(R):ON_CANCEL") {
+    field(DESC, "Cancel pending ON")
+    field(INPA, "$(P):$(R):STATE_SP NPP")
+    field(CALC, "A!=1")
+    field(OOPT, "When Non-zero")
+    field(DOPT, "Use OCAL")
+    field(OCAL, "0")
+    field(OUT,  "$(P):$(R):ON_PENDING PP")
     field(FLNK, "$(P):$(R):STATE_DISPATCH")
 }
 
-# OFF and STANDBY -> Power Off (2), ON -> Power On (1), RESET -> Reset (4)
+# OFF and STANDBY -> Power Off (2), ON -> see ON_REQ, RESET -> Reset (4)
 record(seq, "$(P):$(R):STATE_DISPATCH") {
     field(DESC, "State command dispatcher")
     field(SELM, "Specified")
@@ -272,11 +292,75 @@ record(seq, "$(P):$(R):STATE_DISPATCH") {
     field(DOL0, "2")
     field(LNK0, "$(P):$(R):CMD_VAL PP")
     field(DOL1, "1")
-    field(LNK1, "$(P):$(R):CMD_VAL PP")
+    field(LNK1, "$(P):$(R):ON_REQ.PROC PP")
     field(DOL2, "2")
     field(LNK2, "$(P):$(R):CMD_VAL PP")
     field(DOL3, "4")
     field(LNK3, "$(P):$(R):CMD_VAL PP")
+}
+
+# Channel ON also switches the cubicle ON: the MAUs only deliver current with
+# the cubicle in Power On. Cubicle ON (STATE_BASE 1): Power On the MAU now.
+# Cubicle OFF / STANDBY: switch the cubicle ON and Power On the MAU once the
+# cubicle power bit is set. Cubicle faulty or unreachable: nothing is sent
+# (the channel shows EXT_INTLK / CONN_FAULT; reset the cubicle explicitly).
+# Channel OFF never switches the cubicle off (the other channels share it).
+record(calcout, "$(P):$(R):ON_REQ") {
+    field(DESC, "ON request")
+    field(INPA, "$(P):$(CUB):STATE_BASE NPP NMS")
+    field(CALC, "A=1?1:(A=0||A=2?6:0)")
+    field(OUT,  "$(P):$(R):ON_ACTION.SELN PP")
+    field(OOPT, "Every Time")
+}
+
+# SELN bit mask: 1 MAU Power On, 2 set ON_PENDING, 4 cubicle ON
+record(seq, "$(P):$(R):ON_ACTION") {
+    field(DESC, "ON actions")
+    field(SELM, "Mask")
+    field(SHFT, "0")
+    field(DOL0, "1")
+    field(LNK0, "$(P):$(R):CMD_VAL PP")
+    field(DOL1, "1")
+    field(LNK1, "$(P):$(R):ON_PENDING PP")
+    field(DOL2, "1")
+    field(LNK2, "$(P):$(CUB):STATE_SP PP")
+}
+
+record(bo, "$(P):$(R):ON_PENDING") {
+    field(DESC, "ON waits for the cubicle")
+    field(ZNAM, "NO")
+    field(ONAM, "WAITING")
+}
+
+# Cubicle reached Power On with an ON pending: Power On the MAU
+record(calcout, "$(P):$(R):ON_PENDING_GO") {
+    field(DESC, "Cubicle ON, finish channel ON")
+    field(INPA, "$(P):$(CUB):POWER_STS CP")
+    field(INPB, "$(P):$(R):ON_PENDING CP")
+    field(CALC, "A&&B")
+    field(OOPT, "Transition To Non-zero")
+    field(OUT,  "$(P):$(R):ON_FIRE.PROC PP")
+}
+
+record(seq, "$(P):$(R):ON_FIRE") {
+    field(DESC, "Power On after cubicle ON")
+    field(SELM, "All")
+    field(DOL0, "0")
+    field(LNK0, "$(P):$(R):ON_PENDING PP")
+    field(DOL1, "1")
+    field(LNK1, "$(P):$(R):CMD_VAL PP")
+}
+
+# Cubicle went faulty or unreachable: drop the pending ON
+record(calcout, "$(P):$(R):ON_PENDING_ABORT") {
+    field(DESC, "Cubicle fault, drop pending ON")
+    field(INPA, "$(P):$(CUB):STATE_BASE CP")
+    field(INPB, "$(P):$(R):ON_PENDING CP")
+    field(CALC, "B&&A>=3")
+    field(OOPT, "When Non-zero")
+    field(DOPT, "Use OCAL")
+    field(OCAL, "0")
+    field(OUT,  "$(P):$(R):ON_PENDING PP")
 }
 
 include "hzacc_unimag_state.template"

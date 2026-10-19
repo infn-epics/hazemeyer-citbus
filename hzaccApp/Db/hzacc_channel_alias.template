@@ -1,0 +1,32 @@
+# hzacc_channel_alias.template - position aliases of a named channel
+#
+# The cubicle OPI (opi/hzacc.bob) addresses the channels by position,
+# $(P):$(CUB):CH1..CH8:... Load this next to hzacc_channel.template when the
+# channel is named after its magnet (R != $(CUB):CH$(CHN)), so the OPI works
+# whatever the channel names. Do not load it with the default channel names of
+# hzacc_channels.substitutions: the aliases would clash with the records.
+#
+# Macros:
+#   P, R        PV prefix of the channel ($(P):$(R):...)
+#   CUB         R of the cubicle
+#   CHN         channel position 1-8 (MAU number + 1, chanel #n of the drawings)
+
+alias("$(P):$(R):CURRENT_SP",       "$(P):$(CUB):CH$(CHN):CURRENT_SP")
+alias("$(P):$(R):SET_CURRENT_RB",   "$(P):$(CUB):CH$(CHN):SET_CURRENT_RB")
+alias("$(P):$(R):CURRENT_RB",       "$(P):$(CUB):CH$(CHN):CURRENT_RB")
+alias("$(P):$(R):VOLTAGE_RB",       "$(P):$(CUB):CH$(CHN):VOLTAGE_RB")
+alias("$(P):$(R):STATE_SP",         "$(P):$(CUB):CH$(CHN):STATE_SP")
+alias("$(P):$(R):STATE_RB",         "$(P):$(CUB):CH$(CHN):STATE_RB")
+alias("$(P):$(R):READY",            "$(P):$(CUB):CH$(CHN):READY")
+alias("$(P):$(R):OPERATIONAL",      "$(P):$(CUB):CH$(CHN):OPERATIONAL")
+alias("$(P):$(R):ALL_FAULT",        "$(P):$(CUB):CH$(CHN):ALL_FAULT")
+alias("$(P):$(R):BALLAST_OT",       "$(P):$(CUB):CH$(CHN):BALLAST_OT")
+alias("$(P):$(R):FUSE_FAULT",       "$(P):$(CUB):CH$(CHN):FUSE_FAULT")
+alias("$(P):$(R):DC_OVERVOLTAGE",   "$(P):$(CUB):CH$(CHN):DC_OVERVOLTAGE")
+alias("$(P):$(R):DC_OVERCURRENT",   "$(P):$(CUB):CH$(CHN):DC_OVERCURRENT")
+alias("$(P):$(R):COMM_FAIL",        "$(P):$(CUB):CH$(CHN):COMM_FAIL")
+alias("$(P):$(R):LOC_REM",          "$(P):$(CUB):CH$(CHN):LOC_REM")
+alias("$(P):$(R):ON_PENDING",       "$(P):$(CUB):CH$(CHN):ON_PENDING")
+alias("$(P):$(R):SET_TOLERANCE",    "$(P):$(CUB):CH$(CHN):SET_TOLERANCE")
+alias("$(P):$(R):ZERO_TOLERANCE",   "$(P):$(CUB):CH$(CHN):ZERO_TOLERANCE")
+alias("$(P):$(R):SET_TIMEOUT_S",    "$(P):$(CUB):CH$(CHN):SET_TIMEOUT_S")

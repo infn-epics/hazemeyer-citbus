@@ -18,7 +18,11 @@
 #
 # Macros:
 #   P, R        PV prefix ($(P):$(R):...)
-#   PORT_MEAS   modbus port reading the word area $0080-$00CB (asyn addr 0 = $0080)
+#   PORT_MEAS   modbus port reading the word area $0080-$009F (asyn addr 0 = $0080)
+#   PORT_MEAS2  modbus port reading the word area $00A0-$00CB (asyn addr 0 = $00A0)
+#               (the word area is split in two reads: the serial gateway delivers
+#               at most 104 bytes per TCP segment and the modbus RTU layer expects
+#               the whole reply in one read)
 #   PORT_CMD    modbus port writing the command words $0000-$001F (asyn addr 0 = $0000)
 #   TIMEOUT     asyn timeout (ms)
 #   PULSE       command pulse width (s, default 0.5)
@@ -40,7 +44,7 @@ record(stringout, "$(P):$(R):SWVER") {
 record(mbbiDirect, "$(P):$(R):GEN_FAULTS") {
     field(DESC, "General faults word")
     field(DTYP, "asynUInt32Digital")
-    field(INP,  "@asynMask($(PORT_MEAS) 64 0xFFFF $(TIMEOUT))MODBUS_DATA")
+    field(INP,  "@asynMask($(PORT_MEAS2) 32 0xFFFF $(TIMEOUT))MODBUS_DATA")
     field(NOBT, "16")
     field(SCAN, "I/O Intr")
 }
@@ -148,7 +152,7 @@ record(bi, "$(P):$(R):CABINET_OT") {
 record(mbbiDirect, "$(P):$(R):GEN_STATUS") {
     field(DESC, "General statuses word")
     field(DTYP, "asynUInt32Digital")
-    field(INP,  "@asynMask($(PORT_MEAS) 65 0xFFFF $(TIMEOUT))MODBUS_DATA")
+    field(INP,  "@asynMask($(PORT_MEAS2) 33 0xFFFF $(TIMEOUT))MODBUS_DATA")
     field(NOBT, "16")
     field(SCAN, "I/O Intr")
 }
@@ -207,7 +211,7 @@ record(calc, "$(P):$(R):ALL_FAULT") {
 record(mbbiDirect, "$(P):$(R):MAU_READY") {
     field(DESC, "MAU ready bits (1 Ready)")
     field(DTYP, "asynUInt32Digital")
-    field(INP,  "@asynMask($(PORT_MEAS) 66 0x00FF $(TIMEOUT))MODBUS_DATA")
+    field(INP,  "@asynMask($(PORT_MEAS2) 34 0x00FF $(TIMEOUT))MODBUS_DATA")
     field(NOBT, "8")
     field(SCAN, "I/O Intr")
 }
@@ -215,7 +219,7 @@ record(mbbiDirect, "$(P):$(R):MAU_READY") {
 record(mbbiDirect, "$(P):$(R):MAU_POWER") {
     field(DESC, "MAU power bits (1 On)")
     field(DTYP, "asynUInt32Digital")
-    field(INP,  "@asynMask($(PORT_MEAS) 67 0x00FF $(TIMEOUT))MODBUS_DATA")
+    field(INP,  "@asynMask($(PORT_MEAS2) 35 0x00FF $(TIMEOUT))MODBUS_DATA")
     field(NOBT, "8")
     field(SCAN, "I/O Intr")
 }

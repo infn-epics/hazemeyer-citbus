@@ -2,7 +2,7 @@
 #
 # Loaded with dbLoadTemplate, passing the common macros:
 #   dbLoadTemplate("hzacc_channels.substitutions",
-#       "P=...,CUB=...,PORT_MEAS=...,PORT_STS=...,PORT_CMD=...,PORT_ISET=...,TIMEOUT=...")
+#       "P=...,CUB=...,PORT_MEAS2=...,PORT_STS=...,PORT_CMD=...,PORT_ISET=...,TIMEOUT=...")
 #
 # R is the PV name of each channel (default $(CUB):CHn): rename it after the
 # magnet / load it feeds.
@@ -12,17 +12,17 @@
 #
 # VRB follows the hand-written MMU tables (voltage at $00A1+4n). The typed
 # table swaps current and voltage for MAU3..MAU7: if a voltage reads like a
-# current, use 32+4n instead.
+# current, use 4n instead.
 
 file "hzacc_channel.template" {
 pattern
 { R,              CH, IRB, VRB, FLT, STS, CMD, ISET }
-{ "$(CUB):CH1", 0,  68,  33, 16, 17, 16, 0    }  # I $00C4, V $00A1, flt $0030, sts $0031, cmd $0010, set $0060
-{ "$(CUB):CH2", 1,  69,  37, 18, 19, 18, 1    }  # I $00C5, V $00A5, flt $0032, sts $0033, cmd $0012, set $0061
-{ "$(CUB):CH3", 2,  70,  41, 20, 21, 20, 2    }  # I $00C6, V $00A9, flt $0034, sts $0035, cmd $0014, set $0062
-{ "$(CUB):CH4", 3,  71,  45, 22, 23, 22, 3    }  # I $00C7, V $00AD, flt $0036, sts $0037, cmd $0016, set $0063
-{ "$(CUB):CH5", 4,  72,  49, 24, 25, 24, 4    }  # I $00C8, V $00B1, flt $0038, sts $0039, cmd $0018, set $0064
-{ "$(CUB):CH6", 5,  73,  53, 26, 27, 26, 5    }  # I $00C9, V $00B5, flt $003A, sts $003B, cmd $001A, set $0065
-{ "$(CUB):CH7", 6,  74,  57, 28, 29, 28, 6    }  # I $00CA, V $00B9, flt $003C, sts $003D, cmd $001C, set $0066
-{ "$(CUB):CH8", 7,  75,  61, 30, 31, 30, 7    }  # I $00CB, V $00BD, flt $003E, sts $003F, cmd $001E, set $0067
+{ "$(CUB):CH1", 0,  36,   1, 16, 17, 16, 0    }  # I $00C4, V $00A1, flt $0030, sts $0031, cmd $0010, set $0060
+{ "$(CUB):CH2", 1,  37,   5, 18, 19, 18, 1    }  # I $00C5, V $00A5, flt $0032, sts $0033, cmd $0012, set $0061
+{ "$(CUB):CH3", 2,  38,   9, 20, 21, 20, 2    }  # I $00C6, V $00A9, flt $0034, sts $0035, cmd $0014, set $0062
+{ "$(CUB):CH4", 3,  39,  13, 22, 23, 22, 3    }  # I $00C7, V $00AD, flt $0036, sts $0037, cmd $0016, set $0063
+{ "$(CUB):CH5", 4,  40,  17, 24, 25, 24, 4    }  # I $00C8, V $00B1, flt $0038, sts $0039, cmd $0018, set $0064
+{ "$(CUB):CH6", 5,  41,  21, 26, 27, 26, 5    }  # I $00C9, V $00B5, flt $003A, sts $003B, cmd $001A, set $0065
+{ "$(CUB):CH7", 6,  42,  25, 28, 29, 28, 6    }  # I $00CA, V $00B9, flt $003C, sts $003D, cmd $001C, set $0066
+{ "$(CUB):CH8", 7,  43,  29, 30, 31, 30, 7    }  # I $00CB, V $00BD, flt $003E, sts $003F, cmd $001E, set $0067
 }

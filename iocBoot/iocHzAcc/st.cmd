@@ -5,8 +5,9 @@
 < envPaths
 
 epicsEnvSet("P",       "SPARC:MAG")
-epicsEnvSet("CUB",     "HZACC01")
 epicsEnvSet("SLAVE",   "1")
+# the cubicle is named after its slave address (as the ibek hazemeyer.cit entity)
+epicsEnvSet("CUB",     "CIT$(SLAVE)")
 epicsEnvSet("TIMEOUT", "1000")
 # dbLoadRecords looks for included templates here
 epicsEnvSet("EPICS_DB_INCLUDE_PATH", "$(TOP)/db")
@@ -35,8 +36,12 @@ modbusInterposeConfig("HZACC_ASYN", 1, 2000, 50)
 #                        modbusStartAddress, modbusLength, dataType, pollMsec, plcType)
 # The record asyn addresses are relative to the start addresses below.
 
-# Read word area $0080-$00CB: mains, MAU output current/voltage, statuses
-drvModbusAsynConfigure("HZACC_MEAS", "HZACC_ASYN", $(SLAVE), 3, 0x80, 76, 0, 500, "HAZEMEYER")
+# Read word area $0080-$00CB in two blocks (keep each reply below the 104 bytes
+# a gateway may put in one TCP segment: the modbus RTU layer needs it in one read)
+# $0080-$009F: mains measurements
+drvModbusAsynConfigure("HZACC_MEAS",  "HZACC_ASYN", $(SLAVE), 3, 0x80, 32, 0, 500, "HAZEMEYER")
+# $00A0-$00CB: MAU output voltage/current, general and MAU statuses
+drvModbusAsynConfigure("HZACC_MEAS2", "HZACC_ASYN", $(SLAVE), 3, 0xA0, 44, 0, 500, "HAZEMEYER")
 # Read bit area $0020-$003F read as words: general and MAU fault / status words
 drvModbusAsynConfigure("HZACC_STS",  "HZACC_ASYN", $(SLAVE), 3, 0x20, 32, 0, 1000, "HAZEMEYER")
 # Write bit area $0000-$001F written as words: general and MAU commands
@@ -45,8 +50,8 @@ drvModbusAsynConfigure("HZACC_CMD",  "HZACC_ASYN", $(SLAVE), 6, 0x00, 32, 0, 1, 
 drvModbusAsynConfigure("HZACC_ISET", "HZACC_ASYN", $(SLAVE), 6, 0x60, 8, 0, 1, "HAZEMEYER")
 
 ## Load databases
-dbLoadRecords("$(TOP)/db/hzacc_cubicle.db", "P=$(P),R=$(CUB),PORT_MEAS=HZACC_MEAS,PORT_CMD=HZACC_CMD,TIMEOUT=$(TIMEOUT)")
-dbLoadTemplate("$(TOP)/db/hzacc_channels.substitutions", "P=$(P),CUB=$(CUB),PORT_MEAS=HZACC_MEAS,PORT_STS=HZACC_STS,PORT_CMD=HZACC_CMD,PORT_ISET=HZACC_ISET,TIMEOUT=$(TIMEOUT),IMAX=10,VMAX=20,RAWMAX=4095")
+dbLoadRecords("$(TOP)/db/hzacc_cubicle.db", "P=$(P),R=$(CUB),PORT_MEAS=HZACC_MEAS,PORT_MEAS2=HZACC_MEAS2,PORT_CMD=HZACC_CMD,TIMEOUT=$(TIMEOUT)")
+dbLoadTemplate("$(TOP)/db/hzacc_channels.substitutions", "P=$(P),CUB=$(CUB),PORT_MEAS2=HZACC_MEAS2,PORT_STS=HZACC_STS,PORT_CMD=HZACC_CMD,PORT_ISET=HZACC_ISET,TIMEOUT=$(TIMEOUT),IMAX=10,VMAX=20,RAWMAX_SP=2048,RAWMAX_RB=8192")
 
 iocInit
 
