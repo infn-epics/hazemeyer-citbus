@@ -635,3 +635,4 @@ record(calc, "$(P):$(R):SP_NOT_REACHED") {
 }
 
 include "hzacc_unimag_state.template"
+include "hzacc_unimag_stwdog.template"

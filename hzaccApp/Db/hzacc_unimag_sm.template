@@ -1,0 +1,196 @@
+# hzacc_unimag_sm.template - UNIMAG state machine of a channel
+#
+# Included by hzacc_channel.template, next to hzacc_unimag_state.template.
+#
+# The MMU does not always apply a command: a current setting or a MAU
+# Power On/Off can get lost. Every CURRENT_SP and STATE_SP write goes
+# through the state machine (aSub, hzaccUnimagSM.c), which sends the command,
+# checks that it takes effect and sends it again, up to RETRY times, when it
+# has not after SET_TIMEOUT_S (the setpoint timer restarts on progress).
+#
+# STATE_SM:
+#   0 READY | 1 GOTOSET | 2 GOTOSTATE | 3 GOZERO | 4 GOPOS | 5 GONEG
+#   6 SPNOTSET (MINOR, setpoint not reached after the retries)
+#   7 STATENOTSET (MAJOR, state not reached after the retries, or lost)
+# GOPOS / GONEG (polarity change) are never entered: the MAUs are bipolar.
+# SPNOTSET -> STATE_RB SP_NOT_REACHED, STATENOTSET -> STATE_RB ST_NOT_REACHED.
+# Both stay until the next command; STATE_SP RESET brings STATE_SM back to
+# READY and stops any retry.
+#
+# Sequences:
+#   CURRENT_SP   send the setting; channel ON: GOTOSET (GOZERO for a zero
+#                setpoint) until CURRENT_RB is within SET_TOLERANCE
+#                (ZERO_TOLERANCE), retrying the setting
+#   ON           GOTOSTATE until ON, retrying ON (cubicle cascade included),
+#                then send CURRENT_SP again and GOTOSET
+#   OFF/STANDBY  channel ON with current: GOZERO (setting 0) first, then
+#                Power Off. GOTOSTATE until OFF, retrying Power Off. Zero not
+#                reached after the retries: Power Off all the same
+#   READY        commanded state lost for SET_TIMEOUT_S (no fault, e.g.
+#                local operation): STATENOTSET, nothing is sent
+# A fault (STATE_BASE FAULT, EXT_INTLK, CONN_FAULT) during a sequence ends it
+# in STATENOTSET. The machine is armed by the first command after boot: a
+# channel left running keeps the MMU setting until CURRENT_SP is written.
+# SET_TOLERANCE 0 disables every current check (no GOTOSET / GOZERO).
+#
+# Requires the records CURRENT_SP, CURRENT_RB, STATE_SP, STATE_BASE,
+# SET_TIMEOUT_S, STATE_FINAL, I_SET (current sent to the MMU), ON_REQ
+# (channel ON) and CMD_VAL (MAU command, 2 = Power Off).
+#
+# Macros:
+#   P, R            PV prefix
+#   SET_TOLERANCE   (A) readback within this of CURRENT_SP counts as reached
+#                       (default 0.1, 0 disables the current checks)
+#   ZERO_TOLERANCE  (A) a zero setpoint counts as reached within this
+#                       (default 0.05)
+#   RETRY           number of times a command is sent again (default 3)
+#   SM_SCAN         state machine period (default ".5 second")
+
+record(ao, "$(P):$(R):SET_TOLERANCE") {
+    field(DESC, "Current setpoint tolerance")
+    field(EGU,  "A")
+    field(PREC, "3")
+    field(VAL,  "$(SET_TOLERANCE=0.1)")
+    field(PINI, "YES")
+    field(DRVL, "0")
+    field(DRVH, "1000")
+}
+
+record(ao, "$(P):$(R):ZERO_TOLERANCE") {
+    field(DESC, "Zero current tolerance")
+    field(EGU,  "A")
+    field(PREC, "3")
+    field(VAL,  "$(ZERO_TOLERANCE=0.05)")
+    field(PINI, "YES")
+    field(DRVL, "0")
+    field(DRVH, "1000")
+}
+
+record(longout, "$(P):$(R):RETRY") {
+    field(DESC, "Command retries")
+    field(VAL,  "$(RETRY=3)")
+    field(PINI, "YES")
+    field(DRVL, "0")
+    field(DRVH, "100")
+}
+
+# Distance of the readback from the setpoint (from zero for a zero setpoint)
+record(calc, "$(P):$(R):SP_ERR") {
+    field(DESC, "Setpoint error")
+    field(INPA, "$(P):$(R):CURRENT_RB CP NMS")
+    field(INPB, "$(P):$(R):CURRENT_SP CP NMS")
+    field(INPC, "$(P):$(R):ZERO_TOLERANCE NPP NMS")
+    field(CALC, "ABS(B)<=C?ABS(A):ABS(A-B)")
+    field(EGU,  "A")
+    field(PREC, "3")
+}
+
+# Command counters: the state machine acts when they change
+record(calc, "$(P):$(R):SP_EVT") {
+    field(DESC, "CURRENT_SP writes")
+    field(INPA, "$(P):$(R):SP_EVT NPP")
+    field(CALC, "A+1")
+    field(FLNK, "$(P):$(R):SM")
+}
+
+record(calc, "$(P):$(R):ST_EVT") {
+    field(DESC, "STATE_SP writes")
+    field(INPA, "$(P):$(R):ST_EVT NPP")
+    field(CALC, "A+1")
+    field(FLNK, "$(P):$(R):SM")
+}
+
+record(aSub, "$(P):$(R):SM") {
+    field(DESC, "UNIMAG state machine")
+    field(SCAN, "$(SM_SCAN=.5 second)")
+    field(INAM, "hzaccSmInit")
+    field(SNAM, "hzaccSmProcess")
+    field(INPA, "$(P):$(R):CURRENT_SP NPP NMS")
+    field(INPB, "$(P):$(R):CURRENT_RB NPP NMS")
+    field(INPC, "$(P):$(R):STATE_SP NPP NMS")
+    field(INPD, "$(P):$(R):STATE_BASE NPP NMS")
+    field(INPE, "$(P):$(R):SET_TOLERANCE NPP NMS")
+    field(INPF, "$(P):$(R):ZERO_TOLERANCE NPP NMS")
+    field(INPG, "$(P):$(R):SET_TIMEOUT_S NPP NMS")
+    field(INPH, "$(P):$(R):RETRY NPP NMS")
+    field(INPI, "$(P):$(R):SP_EVT NPP NMS")
+    field(INPJ, "$(P):$(R):ST_EVT NPP NMS")
+    field(FTA,  "DOUBLE")
+    field(FTB,  "DOUBLE")
+    field(FTC,  "DOUBLE")
+    field(FTD,  "DOUBLE")
+    field(FTE,  "DOUBLE")
+    field(FTF,  "DOUBLE")
+    field(FTG,  "DOUBLE")
+    field(FTH,  "DOUBLE")
+    field(FTI,  "DOUBLE")
+    field(FTJ,  "DOUBLE")
+    field(FTVA, "DOUBLE")
+    field(FTVB, "DOUBLE")
+    field(FTVC, "DOUBLE")
+    field(FTVD, "DOUBLE")
+    field(OUTA, "$(P):$(R):STATE_SM PP")
+    field(OUTB, "$(P):$(R):RETRY_COUNT PP")
+    field(OUTC, "$(P):$(R):SM_ISET NPP")
+    field(OUTD, "$(P):$(R):SM_ACT.SELN PP")
+}
+
+record(mbbi, "$(P):$(R):STATE_SM") {
+    field(DESC, "UNIMAG state machine")
+    field(ZRVL, "0")
+    field(ZRST, "READY")
+    field(ONVL, "1")
+    field(ONST, "GOTOSET")
+    field(TWVL, "2")
+    field(TWST, "GOTOSTATE")
+    field(THVL, "3")
+    field(THST, "GOZERO")
+    field(FRVL, "4")
+    field(FRST, "GOPOS")
+    field(FVVL, "5")
+    field(FVST, "GONEG")
+    field(SXVL, "6")
+    field(SXST, "SPNOTSET")
+    field(SXSV, "MINOR")
+    field(SVVL, "7")
+    field(SVST, "STATENOTSET")
+    field(SVSV, "MAJOR")
+    field(FLNK, "$(P):$(R):SP_NOT_REACHED")
+}
+
+record(longin, "$(P):$(R):RETRY_COUNT") {
+    field(DESC, "Retries of the current command")
+}
+
+# Current the state machine sends (CURRENT_SP, or 0 before Power Off)
+record(ao, "$(P):$(R):SM_ISET") {
+    field(DESC, "Current to send")
+    field(EGU,  "A")
+    field(PREC, "3")
+}
+
+# SELN: 0 nothing, 1 send SM_ISET, 2 channel ON, 3 MAU Power Off
+record(seq, "$(P):$(R):SM_ACT") {
+    field(DESC, "State machine actions")
+    field(SELM, "Specified")
+    field(DOL1, "$(P):$(R):SM_ISET NPP")
+    field(LNK1, "$(P):$(R):I_SET PP")
+    field(DOL2, "1")
+    field(LNK2, "$(P):$(R):ON_REQ.PROC PP")
+    field(DOL3, "2")
+    field(LNK3, "$(P):$(R):CMD_VAL PP")
+}
+
+record(calc, "$(P):$(R):SP_NOT_REACHED") {
+    field(DESC, "Setpoint not reached")
+    field(INPA, "$(P):$(R):STATE_SM NPP NMS")
+    field(CALC, "A=6")
+    field(FLNK, "$(P):$(R):ST_NOT_REACHED")
+}
+
+record(calc, "$(P):$(R):ST_NOT_REACHED") {
+    field(DESC, "State not reached")
+    field(INPA, "$(P):$(R):STATE_SM NPP NMS")
+    field(CALC, "A=7")
+    field(FLNK, "$(P):$(R):STATE_FINAL")
+}

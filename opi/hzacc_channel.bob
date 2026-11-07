@@ -3,7 +3,7 @@
   <name>Hazemeyer CITBus $(R)</name>
   <macros><ID>1</ID></macros>
   <width>560</width>
-  <height>580</height>
+  <height>610</height>
   <widget type="label" version="2.0.0">
     <name>Label_1</name>
     <text>Hazemeyer CITBus  $(R)</text>
@@ -357,8 +357,8 @@
     <vertical_alignment>1</vertical_alignment>
   </widget>
   <widget type="group" version="2.0.0">
-    <name>Watchdogs</name>
-    <x>285</x><y>365</y><width>265</width><height>205</height>
+    <name>State machine</name>
+    <x>285</x><y>365</y><width>265</width><height>232</height>
   </widget>
   <widget type="label" version="2.0.0">
     <name>Label_41</name>
@@ -424,24 +424,21 @@
   </widget>
   <widget type="label" version="2.0.0">
     <name>Label_49</name>
-    <text>SP unreached</text>
+    <text>Retries</text>
     <x>300</x><y>503</y><width>120</width><height>22</height>
     <font><font family="Liberation Sans" style="REGULAR" size="14.0"></font></font>
     <horizontal_alignment>0</horizontal_alignment>
     <vertical_alignment>1</vertical_alignment>
   </widget>
-  <widget type="textupdate" version="2.0.0">
-    <name>Text Update_50</name>
-    <pv_name>$(P):$(R):SP_WDOG</pv_name>
+  <widget type="textentry" version="3.0.0">
+    <name>Text Entry_50</name>
+    <pv_name>$(P):$(R):RETRY</pv_name>
     <x>420</x><y>503</y><width>115</width><height>22</height>
-    <show_units>true</show_units>
     <horizontal_alignment>1</horizontal_alignment>
-    <vertical_alignment>1</vertical_alignment>
-    <border_alarm_sensitive>true</border_alarm_sensitive>
   </widget>
   <widget type="label" version="2.0.0">
     <name>Label_51</name>
-    <text>State unreached</text>
+    <text>Machine state</text>
     <x>300</x><y>530</y><width>120</width><height>22</height>
     <font><font family="Liberation Sans" style="REGULAR" size="14.0"></font></font>
     <horizontal_alignment>0</horizontal_alignment>
@@ -449,8 +446,25 @@
   </widget>
   <widget type="textupdate" version="2.0.0">
     <name>Text Update_52</name>
-    <pv_name>$(P):$(R):ST_WDOG</pv_name>
+    <pv_name>$(P):$(R):STATE_SM</pv_name>
     <x>420</x><y>530</y><width>115</width><height>22</height>
+    <show_units>true</show_units>
+    <horizontal_alignment>1</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+    <border_alarm_sensitive>true</border_alarm_sensitive>
+  </widget>
+  <widget type="label" version="2.0.0">
+    <name>Label_53</name>
+    <text>Retry count</text>
+    <x>300</x><y>557</y><width>120</width><height>22</height>
+    <font><font family="Liberation Sans" style="REGULAR" size="14.0"></font></font>
+    <horizontal_alignment>0</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+  </widget>
+  <widget type="textupdate" version="2.0.0">
+    <name>Text Update_54</name>
+    <pv_name>$(P):$(R):RETRY_COUNT</pv_name>
+    <x>420</x><y>557</y><width>115</width><height>22</height>
     <show_units>true</show_units>
     <horizontal_alignment>1</horizontal_alignment>
     <vertical_alignment>1</vertical_alignment>

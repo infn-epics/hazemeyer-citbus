@@ -1,0 +1,55 @@
+# sim_channel.db - the channel records the UNIMAG state machine talks to,
+# without Modbus: test/test_unimag_sm.sh plays the device through CA
+# (CURRENT_RB, STATE_BASE) and counts what the state machine sends.
+
+record(ao, "$(P):$(R):CURRENT_SP") {
+    field(PREC, "3")
+    field(FLNK, "$(P):$(R):SP_EVT")
+}
+
+record(ao, "$(P):$(R):CURRENT_RB") {
+    field(PREC, "3")
+}
+
+record(mbbo, "$(P):$(R):STATE_SP") {
+    field(ZRVL, "0")
+    field(ZRST, "OFF")
+    field(ONVL, "1")
+    field(ONST, "ON")
+    field(TWVL, "2")
+    field(TWST, "STANDBY")
+    field(THVL, "3")
+    field(THST, "RESET")
+    field(FLNK, "$(P):$(R):ST_EVT")
+}
+
+# current sent to the MMU, and how many times
+record(ao, "$(P):$(R):I_SET") {
+    field(PREC, "3")
+    field(FLNK, "$(P):$(R):I_SET_CNT")
+}
+
+record(calc, "$(P):$(R):I_SET_CNT") {
+    field(INPA, "$(P):$(R):I_SET_CNT NPP")
+    field(CALC, "A+1")
+}
+
+# channel ON requests
+record(calc, "$(P):$(R):ON_REQ") {
+    field(INPA, "$(P):$(R):ON_REQ NPP")
+    field(CALC, "A+1")
+}
+
+# MAU commands (2 = Power Off): counts the Power Off
+record(ao, "$(P):$(R):CMD_VAL") {
+    field(FLNK, "$(P):$(R):OFF_CNT")
+}
+
+record(calc, "$(P):$(R):OFF_CNT") {
+    field(INPA, "$(P):$(R):OFF_CNT NPP")
+    field(INPB, "$(P):$(R):CMD_VAL NPP")
+    field(CALC, "B=2?A+1:A")
+}
+
+include "hzacc_unimag_state.template"
+include "hzacc_unimag_sm.template"

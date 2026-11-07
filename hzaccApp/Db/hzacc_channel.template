@@ -6,6 +6,8 @@
 # Channel state descriptor (Power, Ready): OFF 01, ON 11, Faulty 00.
 # Ready and power come from the cubicle words $00C2/$00C3 (bit CH).
 # Channel ON switches the cubicle ON too (see ON_REQ).
+# CURRENT_SP and STATE_SP (except RESET) are sent by the UNIMAG state
+# machine (hzacc_unimag_sm.template), which retries them.
 #
 # Macros:
 #   P, R        PV prefix of the channel ($(P):$(R):...)
@@ -30,7 +32,8 @@
 #               raw setting 410 -> 2.000 A, raw readback 1644 -> 2.000 A
 #   TIMEOUT     asyn timeout (ms)
 #   PULSE       command pulse width (s, default 0.5)
-#   SET_TOLERANCE, ZERO_TOLERANCE, SET_TIMEOUT_S  UNIMAG watchdog settings
+#   SET_TOLERANCE, ZERO_TOLERANCE, SET_TIMEOUT_S, RETRY  UNIMAG state machine
+#               settings (see hzacc_unimag_sm.template)
 
 ########################################################################################
 ### Current setpoint ($0060+CH)
@@ -44,12 +47,22 @@ record(ao, "$(P):$(R):CURRENT_SP") {
     field(DRVH, "$(IMAX=10)")
     field(LOPR, "-$(IMAX=10)")
     field(HOPR, "$(IMAX=10)")
+    field(FLNK, "$(P):$(R):SP_EVT")
+}
+
+# Current sent to the MMU, written by the state machine (SM_ACT)
+record(ao, "$(P):$(R):I_SET") {
+    field(DESC, "Current sent to the MMU")
+    field(EGU,  "A")
+    field(PREC, "3")
+    field(DRVL, "-$(IMAX=10)")
+    field(DRVH, "$(IMAX=10)")
     field(FLNK, "$(P):$(R):CALC_CURRENT_RAW")
 }
 
 record(calcout, "$(P):$(R):CALC_CURRENT_RAW") {
     field(DESC, "Convert current to raw value")
-    field(INPA, "$(P):$(R):CURRENT_SP NPP")
+    field(INPA, "$(P):$(R):I_SET NPP")
     field(CALC, "FLOOR(A*$(RAWMAX_SP=2048)/$(IMAX=10)+0.5)")
     field(OUT,  "$(P):$(R):RAW_CURRENT_SP PP")
 }
@@ -284,19 +297,16 @@ record(calcout, "$(P):$(R):ON_CANCEL") {
     field(FLNK, "$(P):$(R):STATE_DISPATCH")
 }
 
-# OFF and STANDBY -> Power Off (2), ON -> see ON_REQ, RESET -> Reset (4)
+# RESET -> Reset (4), sent at once. OFF, STANDBY and ON are sent by the
+# state machine (ST_EVT -> SM): ON through ON_REQ, OFF / STANDBY as MAU
+# Power Off (2), after ramping the current to zero.
 record(seq, "$(P):$(R):STATE_DISPATCH") {
     field(DESC, "State command dispatcher")
     field(SELM, "Specified")
     field(SELL, "$(P):$(R):STATE_SP NPP")
-    field(DOL0, "2")
-    field(LNK0, "$(P):$(R):CMD_VAL PP")
-    field(DOL1, "1")
-    field(LNK1, "$(P):$(R):ON_REQ.PROC PP")
-    field(DOL2, "2")
-    field(LNK2, "$(P):$(R):CMD_VAL PP")
     field(DOL3, "4")
     field(LNK3, "$(P):$(R):CMD_VAL PP")
+    field(FLNK, "$(P):$(R):ST_EVT")
 }
 
 # Channel ON also switches the cubicle ON: the MAUs only deliver current with
@@ -364,4 +374,4 @@ record(calcout, "$(P):$(R):ON_PENDING_ABORT") {
 }
 
 include "hzacc_unimag_state.template"
-include "hzacc_unimag_setpoint.template"
+include "hzacc_unimag_sm.template"

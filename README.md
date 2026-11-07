@@ -81,9 +81,48 @@ UNIMAG states:
   the cubicle faulty or unreachable nothing is sent: reset the cubicle first.
   A channel `OFF` never switches the cubicle off.
 
-The watchdog settings `SET_TOLERANCE` (default 0.1 A), `ZERO_TOLERANCE`
-(default 0.05 A) and `SET_TIMEOUT_S` (default 30 s) are db macros and live PVs,
-as in `../hazemeyer-lnf`.
+### UNIMAG state machine (channels)
+
+The MMU does not always apply a command: a current setting or a MAU Power
+On/Off can get lost. Each channel runs a state machine (`aSub` record `SM`,
+`hzaccApp/src/hzaccUnimagSM.c`, `hzacc_unimag_sm.template`) that sends every
+`CURRENT_SP` / `STATE_SP` command, checks that it takes effect and sends it
+again, up to `RETRY` times, when it has not after `SET_TIMEOUT_S` (the
+setpoint timer restarts while the current makes progress). `STATE_SM` tells
+what the supply is doing:
+
+| Value | `STATE_SM` | Meaning |
+|-------|------------|---------|
+| 0 | `READY` | idle, last command done |
+| 1 | `GOTOSET` | waiting for `CURRENT_RB` within `SET_TOLERANCE` of `CURRENT_SP` |
+| 2 | `GOTOSTATE` | waiting for the commanded state |
+| 3 | `GOZERO` | waiting for the current within `ZERO_TOLERANCE` of zero (zero setpoint, or ramp down before Power Off) |
+| 4 / 5 | `GOPOS` / `GONEG` | polarity change: never entered, the MAUs are bipolar |
+| 6 | `SPNOTSET` (MINOR) | setpoint not reached after the retries -> `STATE_RB` `SP_NOT_REACHED` |
+| 7 | `STATENOTSET` (MAJOR) | state not reached after the retries, or lost -> `STATE_RB` `ST_NOT_REACHED` |
+
+- `CURRENT_SP`: the setting is sent at once. With the channel ON: `GOTOSET`
+  (`GOZERO` for a zero setpoint), retrying the setting.
+- `ON`: `GOTOSTATE`, retrying ON (cubicle cascade included). Once ON, the
+  `CURRENT_SP` is sent again (the MMU may have dropped it) and `GOTOSET`.
+- `OFF` / `STANDBY` with the channel ON and current flowing: `GOZERO`
+  (setting 0) first, then Power Off and `GOTOSTATE`, retrying Power Off. If
+  zero is not reached after the retries, Power Off is sent all the same.
+  `CURRENT_SP` keeps its value and is sent again at the next ON.
+- A fault (`FAULT`, `EXT_INTLK`, `CONN_FAULT`) during a sequence ends it in
+  `STATENOTSET`. In `READY`, a commanded state lost for `SET_TIMEOUT_S`
+  without a fault (e.g. local operation) also gives `STATENOTSET`; nothing is
+  sent automatically.
+- `SPNOTSET` and `STATENOTSET` stay until the next command. `STATE_SP` `RESET`
+  sends MAU Reset, stops any retry and brings `STATE_SM` back to `READY`.
+- The machine is armed by the first command after boot: a channel left running
+  keeps the MMU setting until `CURRENT_SP` is written (the OFF ramp down and the
+  setpoint resend at ON only happen once `CURRENT_SP` has been written).
+
+`SET_TOLERANCE` (default 0.1 A, 0 disables every current check),
+`ZERO_TOLERANCE` (default 0.05 A), `SET_TIMEOUT_S` (default 30 s) and `RETRY`
+(default 3) are db macros and live PVs. The cubicle has no state machine: its
+`ST_NOT_REACHED` comes from the state watchdog (`hzacc_unimag_stwdog.template`).
 
 ### Channel PVs (`$(P):$(R):`)
 
@@ -97,6 +136,11 @@ as in `../hazemeyer-lnf`.
 | `BALLAST_OT`, `FUSE_FAULT`, `DC_OVERVOLTAGE`, `DC_OVERCURRENT`, `COMM_FAIL` | MAU detailed faults |
 | `LOC_REM` | local / remote (copy of the cubicle `LOC_REM`) |
 | `ON_PENDING` | channel ON waiting for the cubicle to reach Power On |
+| `STATE_SM` | UNIMAG state machine (see above) |
+| `RETRY`, `RETRY_COUNT` | retries allowed per command / retries of the current command |
+| `SET_TOLERANCE`, `ZERO_TOLERANCE`, `SET_TIMEOUT_S` | state machine settings |
+| `SP_ERR` | distance of `CURRENT_RB` from `CURRENT_SP` (from zero for a zero setpoint) |
+| `I_SET` | current last sent to the MMU (A) |
 | `RAW_*`, `CMD_WORD`, `MAU_FAULTS`, `MAU_STATUS` | raw Modbus values |
 
 ### Cubicle PVs (`$(P):$(CUB):`)
@@ -125,6 +169,9 @@ as in `../hazemeyer-lnf`.
 | `RAWMAX_SP` | channel | raw current setting at `IMAX` (signed) | 2048 |
 | `RAWMAX_RB` | channel | raw current / voltage readback at `IMAX` / `VMAX` (signed) | 8192 |
 | `PULSE` | all | command pulse width (s) | 0.5 |
+| `SET_TOLERANCE`, `ZERO_TOLERANCE`, `SET_TIMEOUT_S` | all | UNIMAG tolerances (A) and timeout (s); the cubicle uses only the timeout | 0.1 / 0.05 / 30 |
+| `RETRY` | channel | command retries | 3 |
+| `SM_SCAN` | channel | state machine period | `.5 second` |
 | `ON_DLY` | cubicle | Standby to Power On delay (s) | 3 |
 | `U_SLO`, `I_SLO`, `P_SLO`, `Q_SLO`, `S_SLO`, `PF_SLO`, `E_SLO`, `IE_SLO`, `F_SLO` | cubicle | raw to engineering scaling of the mains values | 1 |
 
@@ -151,6 +198,17 @@ Phoebus panels:
 - `opi/hzacc_channel.bob`: one channel by name (macros `P`, `R` = channel name,
   `ID` = slave address of its cubicle, shown for the cubicle state), e.g.
   `P=ACC:MAG:COR,R=CHHA1002,ID=1`.
+
+## Tests
+
+`test/test_unimag_sm.sh` runs the state machine against a simulated channel
+(`test/sim_channel.db`, no hardware) and checks every sequence above. Build
+first, then from the top directory, e.g. in the development container:
+
+```bash
+docker run --rm -v $PWD:/app/hz -w /app/hz ghcr.io/infn-epics/infn-epics-ioc-base \
+    bash -c 'make && test/test_unimag_sm.sh'
+```
 
 ## To check on the real cubicle
 

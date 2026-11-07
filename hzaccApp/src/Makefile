@@ -7,6 +7,13 @@ include $(TOP)/configure/CONFIG
 # Use typed rset structure (see 3.16.1 release notes)
 USR_CPPFLAGS += -DUSE_TYPED_RSET
 
+# UNIMAG state machine (aSub routine, one per channel) in a support library,
+# so that other IOCs (ibek generic IOC) can link it: hzaccSupport + hzaccUnimagSM.dbd
+LIBRARY_IOC += hzaccSupport
+hzaccSupport_SRCS += hzaccUnimagSM.c
+hzaccSupport_LIBS += $(EPICS_BASE_IOC_LIBS)
+DBD += hzaccUnimagSM.dbd
+
 # Build the IOC application
 PROD_IOC = hzacc
 
@@ -19,12 +26,14 @@ hzacc_DBD += modbusSupport.dbd
 hzacc_DBD += asyn.dbd
 hzacc_DBD += drvAsynIPPort.dbd
 hzacc_DBD += drvAsynSerialPort.dbd
+hzacc_DBD += hzaccUnimagSM.dbd
 hzacc_SRCS += hzacc_registerRecordDeviceDriver.cpp
 
 # Build the main IOC entry point where needed
 hzacc_SRCS_DEFAULT += hzaccMain.cpp
 hzacc_SRCS_vxWorks += -nil-
 
+hzacc_LIBS += hzaccSupport
 hzacc_LIBS += modbus
 hzacc_LIBS += asyn
 
