@@ -13,7 +13,8 @@
 #   6 SPNOTSET (MINOR, setpoint not reached after the retries)
 #   7 STATENOTSET (MAJOR, state not reached after the retries, or lost)
 # GOPOS / GONEG (polarity change) are never entered: the MAUs are bipolar.
-# SPNOTSET -> STATE_RB SP_NOT_REACHED, STATENOTSET -> STATE_RB ST_NOT_REACHED.
+# SPNOTSET and STATENOTSET are software states: STATE_RB keeps the device
+# state (STATE_FINAL below overrides the one of hzacc_unimag_state.template).
 # Both stay until the next command; STATE_SP RESET brings STATE_SM back to
 # READY and stops any retry.
 #
@@ -193,4 +194,12 @@ record(calc, "$(P):$(R):ST_NOT_REACHED") {
     field(INPA, "$(P):$(R):STATE_SM NPP NMS")
     field(CALC, "A=7")
     field(FLNK, "$(P):$(R):STATE_FINAL")
+}
+
+# A setpoint / state not reached is reported by STATE_SM only: the channel
+# STATE_RB keeps the device state (the cubicle, without a state machine,
+# still shows ST_NOT_REACHED in its STATE_RB).
+record(calcout, "$(P):$(R):STATE_FINAL") {
+    field(DESC, "Final state")
+    field(CALC, "A")
 }

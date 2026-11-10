@@ -12,7 +12,9 @@
 # The device logic decodes the plain state (0-5) into STATE_BASE. 6 and 7
 # come on top of it from SP_NOT_REACHED / ST_NOT_REACHED, and STATE_FINAL
 # selects what STATE_RB shows: faults win, then ST_NOT_REACHED, then
-# SP_NOT_REACHED.
+# SP_NOT_REACHED. The channels override STATE_FINAL in
+# hzacc_unimag_sm.template: their STATE_SM reports 6 and 7, STATE_RB keeps
+# the device state.
 #
 # The including file must provide the records SP_NOT_REACHED and
 # ST_NOT_REACHED (FLNK STATE_FINAL): the channels from the UNIMAG state

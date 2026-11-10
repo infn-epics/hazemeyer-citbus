@@ -61,7 +61,7 @@ echo "== setpoint never reached: SPNOTSET after RETRY=2"
 put CURRENT_SP 7; sleep $((TMO * 3 + 2))
 check STATE_SM SPNOTSET "retries exhausted"
 check RETRY_COUNT 2 "retries"
-check STATE_RB SP_NOT_REACHED "STATE_RB"
+check STATE_RB ON "STATE_RB keeps the device state"
 put STATE_SP RESET; sleep 0.3
 check STATE_SM READY "RESET"
 check STATE_RB ON "STATE_RB after RESET"
@@ -111,7 +111,7 @@ echo "== ON never reached: STATENOTSET"
 put STATE_BASE 0; put STATE_SP OFF; sleep 0.3
 put STATE_SP ON; sleep $((TMO * 3 + 2))
 check STATE_SM STATENOTSET "retries exhausted"
-check STATE_RB ST_NOT_REACHED "STATE_RB"
+check STATE_RB OFF "STATE_RB keeps the device state"
 put STATE_SP RESET; sleep 0.3
 check STATE_SM READY "RESET"
 

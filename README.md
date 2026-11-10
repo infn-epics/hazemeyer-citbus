@@ -66,8 +66,10 @@ UNIMAG states:
 | 3 | `FAULT` | Faulty (000 / 010) | MAU not ready |
 | 4 | `EXT_INTLK` | - | cubicle faulty |
 | 5 | `CONN_FAULT` | status word cannot be read | ready word cannot be read, or MAU CITBus failure |
-| 6 | `SP_NOT_REACHED` | - | current setpoint not reached |
-| 7 | `ST_NOT_REACHED` | commanded state not reached | commanded state not reached |
+| 7 | `ST_NOT_REACHED` | commanded state not reached | - |
+
+A channel reports a setpoint or state not reached in `STATE_SM` (`SPNOTSET` /
+`STATENOTSET`), not in `STATE_RB`.
 
 `STATE_SP` accepts `OFF`, `ON`, `STANDBY` and `RESET`.
 
@@ -98,8 +100,8 @@ what the supply is doing:
 | 2 | `GOTOSTATE` | waiting for the commanded state |
 | 3 | `GOZERO` | waiting for the current within `ZERO_TOLERANCE` of zero (zero setpoint, or ramp down before Power Off) |
 | 4 / 5 | `GOPOS` / `GONEG` | polarity change: never entered, the MAUs are bipolar |
-| 6 | `SPNOTSET` (MINOR) | setpoint not reached after the retries -> `STATE_RB` `SP_NOT_REACHED` |
-| 7 | `STATENOTSET` (MAJOR) | state not reached after the retries, or lost -> `STATE_RB` `ST_NOT_REACHED` |
+| 6 | `SPNOTSET` (MINOR) | setpoint not reached after the retries |
+| 7 | `STATENOTSET` (MAJOR) | state not reached after the retries, or lost |
 
 - `CURRENT_SP`: the setting is sent at once. With the channel ON: `GOTOSET`
   (`GOZERO` for a zero setpoint), retrying the setting.
